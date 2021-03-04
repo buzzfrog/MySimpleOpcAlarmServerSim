@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<NodeSet xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://opcfoundation.org/UA/2008/02/Types.xsd">
+  <NamespaceUris>
+    <String>http://opcfoundation.org/UA/</String>
+    <String>http://buzzfrog.se/OpcAlarmServer</String>
+  </NamespaceUris>
+  <ServerUris />
+  <Nodes>
+    <Node i:type="ObjectTypeNode">
+      <NodeId>
+        <Identifier>ns=1;i=15001</Identifier>
+      </NodeId>
+      <NodeClass>ObjectType_8</NodeClass>
+      <BrowseName>
+        <NamespaceIndex>1</NamespaceIndex>
+        <Name>CarType</Name>
+      </BrowseName>
+      <DisplayName>
+        <Locale></Locale>
+        <Text>CarType</Text>
+      </DisplayName>
+      <Description>
+        <Locale></Locale>
+        <Text>A generic car type</Text>
+      </Description>
+      <WriteMask>0</WriteMask>
+      <UserWriteMask>0</UserWriteMask>
+      <RolePermissions />
+      <UserRolePermissions />
+      <AccessRestrictions>0</AccessRestrictions>
+      <References>
+        <ReferenceNode>
+          <ReferenceTypeId>
+            <Identifier>i=45</Identifier>
+          </ReferenceTypeId>
+          <IsInverse>true</IsInverse>
+          <TargetId>
+            <Identifier>i=58</Identifier>
+          </TargetId>
+        </ReferenceNode>
+      </References>
+      <IsAbstract>false</IsAbstract>
+    </Node>
+    <Node i:type="ObjectNode">
+      <NodeId>
+        <Identifier>ns=1;i=15002</Identifier>
+      </NodeId>
+      <NodeClass>Object_1</NodeClass>
+      <BrowseName>
+        <NamespaceIndex>1</NamespaceIndex>
+        <Name>Car #1</Name>
+      </BrowseName>
+      <DisplayName>
+        <Locale></Locale>
+        <Text>Car #1</Text>
+      </DisplayName>
+      <Description i:nil="true" />
+      <WriteMask>0</WriteMask>
+      <UserWriteMask>0</UserWriteMask>
+      <RolePermissions />
+      <UserRolePermissions />
+      <AccessRestrictions>0</AccessRestrictions>
+      <References>
+        <ReferenceNode>
+          <ReferenceTypeId>
+            <Identifier>i=40</Identifier>
+          </ReferenceTypeId>
+          <IsInverse>false</IsInverse>
+          <TargetId>
+            <Identifier>ns=1;i=15001</Identifier>
+          </TargetId>
+        </ReferenceNode>
+        <ReferenceNode>
+          <ReferenceTypeId>
+            <Identifier>i=35</Identifier>
+          </ReferenceTypeId>
+          <IsInverse>true</IsInverse>
+          <TargetId>
+            <Identifier>i=85</Identifier>
+          </TargetId>
+        </ReferenceNode>
+      </References>
+      <EventNotifier>1</EventNotifier>
+    </Node>
+  </Nodes>
+</NodeSet>

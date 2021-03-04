@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<uax:ListOfNodeState xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:uax="http://opcfoundation.org/UA/2008/02/Types.xsd">
+  <uax:NamespaceUris>
+    <uax:NamespaceUri>http://buzzfrog.se/OpcAlarmServer</uax:NamespaceUri>
+  </uax:NamespaceUris>
+  <CarType xmlns="http://buzzfrog.se/OpcAlarmServer">
+    <uax:NodeClass>ObjectType_8</uax:NodeClass>
+    <uax:NodeId>
+      <uax:Identifier>ns=1;i=15001</uax:Identifier>
+    </uax:NodeId>
+    <uax:BrowseName>
+      <uax:NamespaceIndex>1</uax:NamespaceIndex>
+      <uax:Name>CarType</uax:Name>
+    </uax:BrowseName>
+    <uax:Description>
+      <uax:Text>A generic car type</uax:Text>
+    </uax:Description>
+    <uax:SuperTypeId>
+      <uax:Identifier>i=58</uax:Identifier>
+    </uax:SuperTypeId>
+  </CarType>
+  <Car1 xmlns="http://buzzfrog.se/OpcAlarmServer">
+    <uax:NodeClass>Object_1</uax:NodeClass>
+    <uax:NodeId>
+      <uax:Identifier>ns=1;i=15002</uax:Identifier>
+    </uax:NodeId>
+    <uax:BrowseName>
+      <uax:NamespaceIndex>1</uax:NamespaceIndex>
+      <uax:Name>Car #1</uax:Name>
+    </uax:BrowseName>
+    <uax:ReferenceTypeId>
+      <uax:Identifier>i=47</uax:Identifier>
+    </uax:ReferenceTypeId>
+    <uax:TypeDefinitionId>
+      <uax:Identifier>ns=1;i=15001</uax:Identifier>
+    </uax:TypeDefinitionId>
+    <uax:NumericId>15002</uax:NumericId>
+    <uax:EventNotifier>1</uax:EventNotifier>
+    <uax:References>
+      <uax:Reference>
+        <uax:ReferenceTypeId>
+          <uax:Identifier>i=35</uax:Identifier>
+        </uax:ReferenceTypeId>
+        <uax:IsInverse>true</uax:IsInverse>
+        <uax:TargetId>
+          <uax:Identifier>i=85</uax:Identifier>
+        </uax:TargetId>
+      </uax:Reference>
+    </uax:References>
+  </Car1>
+</uax:ListOfNodeState>
