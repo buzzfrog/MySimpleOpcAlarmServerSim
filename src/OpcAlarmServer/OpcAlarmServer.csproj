@@ -9,4 +9,10 @@
     <PackageReference Include="OPCFoundation.NetStandard.Opc.Ua" Version="1.4.365.48" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Opc.Ua.MyServer.Config.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

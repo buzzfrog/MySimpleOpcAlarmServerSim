@@ -6,7 +6,8 @@ namespace OpcAlarmServer
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            MyServer server = new MyServer();
+            server.Run();
         }
     }
 }
