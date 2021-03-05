@@ -165,6 +165,11 @@ namespace OpcAlarmServer
                 throw new Exception("Application instance certificate invalid!");
             }
 
+            if (!config.SecurityConfiguration.AutoAcceptUntrustedCertificates)
+            {
+                config.CertificateValidator.CertificateValidation += new CertificateValidationEventHandler(CertificateValidator_CertificateValidation);
+            }
+
             await application.Start(this);
 
             Console.WriteLine("Server Endpoints:");
@@ -246,6 +251,14 @@ namespace OpcAlarmServer
                         _certificateValidator = certificateValidator.GetChannelValidator();
                     }
                 }
+            }
+        }
+
+        private void CertificateValidator_CertificateValidation(CertificateValidator validator, CertificateValidationEventArgs e)
+        {
+            if (e.Error.StatusCode == StatusCodes.BadCertificateUntrusted)
+            {
+                Console.WriteLine("Accepted Certificate: {0}", e.Certificate.Subject);
             }
         }
     }
