@@ -89,6 +89,21 @@ namespace buzzfrog.OpcAlarmServer
         /// The identifier for the Car1_Tank_TankLevelCondition_AddComment Method.
         /// </summary>
         public const uint Car1_Tank_TankLevelCondition_AddComment = 15257;
+
+        /// <summary>
+        /// The identifier for the Car2_Tank_TankLevelCondition_Disable Method.
+        /// </summary>
+        public const uint Car2_Tank_TankLevelCondition_Disable = 15320;
+
+        /// <summary>
+        /// The identifier for the Car2_Tank_TankLevelCondition_Enable Method.
+        /// </summary>
+        public const uint Car2_Tank_TankLevelCondition_Enable = 15321;
+
+        /// <summary>
+        /// The identifier for the Car2_Tank_TankLevelCondition_AddComment Method.
+        /// </summary>
+        public const uint Car2_Tank_TankLevelCondition_AddComment = 15322;
     }
     #endregion
 
@@ -199,6 +214,46 @@ namespace buzzfrog.OpcAlarmServer
         /// The identifier for the Car1_Tank_TankLevelCondition Object.
         /// </summary>
         public const uint Car1_Tank_TankLevelCondition = 15222;
+
+        /// <summary>
+        /// The identifier for the Car2 Object.
+        /// </summary>
+        public const uint Car2 = 15259;
+
+        /// <summary>
+        /// The identifier for the Car2_Blinkers Object.
+        /// </summary>
+        public const uint Car2_Blinkers = 15260;
+
+        /// <summary>
+        /// The identifier for the Car2_Blinkers_LeftBlinker Object.
+        /// </summary>
+        public const uint Car2_Blinkers_LeftBlinker = 15261;
+
+        /// <summary>
+        /// The identifier for the Car2_Blinkers_LeftBlinker_LeftBlinkersOn Object.
+        /// </summary>
+        public const uint Car2_Blinkers_LeftBlinker_LeftBlinkersOn = 15262;
+
+        /// <summary>
+        /// The identifier for the Car2_Blinkers_LeftBlinker_LeftBlinkersOff Object.
+        /// </summary>
+        public const uint Car2_Blinkers_LeftBlinker_LeftBlinkersOff = 15273;
+
+        /// <summary>
+        /// The identifier for the Car2_Blinkers_RightBlinker Object.
+        /// </summary>
+        public const uint Car2_Blinkers_RightBlinker = 15284;
+
+        /// <summary>
+        /// The identifier for the Car2_Tank Object.
+        /// </summary>
+        public const uint Car2_Tank = 15285;
+
+        /// <summary>
+        /// The identifier for the Car2_Tank_TankLevelCondition Object.
+        /// </summary>
+        public const uint Car2_Tank_TankLevelCondition = 15287;
     }
     #endregion
 
@@ -929,6 +984,216 @@ namespace buzzfrog.OpcAlarmServer
         /// The identifier for the Car1_Tank_TankLevelCondition_AddComment_InputArguments Variable.
         /// </summary>
         public const uint Car1_Tank_TankLevelCondition_AddComment_InputArguments = 15258;
+
+        /// <summary>
+        /// The identifier for the Car2_Blinkers_LeftBlinker_LeftBlinkersOn_EventId Variable.
+        /// </summary>
+        public const uint Car2_Blinkers_LeftBlinker_LeftBlinkersOn_EventId = 15263;
+
+        /// <summary>
+        /// The identifier for the Car2_Blinkers_LeftBlinker_LeftBlinkersOn_EventType Variable.
+        /// </summary>
+        public const uint Car2_Blinkers_LeftBlinker_LeftBlinkersOn_EventType = 15264;
+
+        /// <summary>
+        /// The identifier for the Car2_Blinkers_LeftBlinker_LeftBlinkersOn_SourceNode Variable.
+        /// </summary>
+        public const uint Car2_Blinkers_LeftBlinker_LeftBlinkersOn_SourceNode = 15265;
+
+        /// <summary>
+        /// The identifier for the Car2_Blinkers_LeftBlinker_LeftBlinkersOn_SourceName Variable.
+        /// </summary>
+        public const uint Car2_Blinkers_LeftBlinker_LeftBlinkersOn_SourceName = 15266;
+
+        /// <summary>
+        /// The identifier for the Car2_Blinkers_LeftBlinker_LeftBlinkersOn_Time Variable.
+        /// </summary>
+        public const uint Car2_Blinkers_LeftBlinker_LeftBlinkersOn_Time = 15267;
+
+        /// <summary>
+        /// The identifier for the Car2_Blinkers_LeftBlinker_LeftBlinkersOn_ReceiveTime Variable.
+        /// </summary>
+        public const uint Car2_Blinkers_LeftBlinker_LeftBlinkersOn_ReceiveTime = 15268;
+
+        /// <summary>
+        /// The identifier for the Car2_Blinkers_LeftBlinker_LeftBlinkersOn_Message Variable.
+        /// </summary>
+        public const uint Car2_Blinkers_LeftBlinker_LeftBlinkersOn_Message = 15270;
+
+        /// <summary>
+        /// The identifier for the Car2_Blinkers_LeftBlinker_LeftBlinkersOn_Severity Variable.
+        /// </summary>
+        public const uint Car2_Blinkers_LeftBlinker_LeftBlinkersOn_Severity = 15271;
+
+        /// <summary>
+        /// The identifier for the Car2_Blinkers_LeftBlinker_LeftBlinkersOn_PositionOfBlinker Variable.
+        /// </summary>
+        public const uint Car2_Blinkers_LeftBlinker_LeftBlinkersOn_PositionOfBlinker = 15272;
+
+        /// <summary>
+        /// The identifier for the Car2_Blinkers_LeftBlinker_LeftBlinkersOff_EventId Variable.
+        /// </summary>
+        public const uint Car2_Blinkers_LeftBlinker_LeftBlinkersOff_EventId = 15274;
+
+        /// <summary>
+        /// The identifier for the Car2_Blinkers_LeftBlinker_LeftBlinkersOff_EventType Variable.
+        /// </summary>
+        public const uint Car2_Blinkers_LeftBlinker_LeftBlinkersOff_EventType = 15275;
+
+        /// <summary>
+        /// The identifier for the Car2_Blinkers_LeftBlinker_LeftBlinkersOff_SourceNode Variable.
+        /// </summary>
+        public const uint Car2_Blinkers_LeftBlinker_LeftBlinkersOff_SourceNode = 15276;
+
+        /// <summary>
+        /// The identifier for the Car2_Blinkers_LeftBlinker_LeftBlinkersOff_SourceName Variable.
+        /// </summary>
+        public const uint Car2_Blinkers_LeftBlinker_LeftBlinkersOff_SourceName = 15277;
+
+        /// <summary>
+        /// The identifier for the Car2_Blinkers_LeftBlinker_LeftBlinkersOff_Time Variable.
+        /// </summary>
+        public const uint Car2_Blinkers_LeftBlinker_LeftBlinkersOff_Time = 15278;
+
+        /// <summary>
+        /// The identifier for the Car2_Blinkers_LeftBlinker_LeftBlinkersOff_ReceiveTime Variable.
+        /// </summary>
+        public const uint Car2_Blinkers_LeftBlinker_LeftBlinkersOff_ReceiveTime = 15279;
+
+        /// <summary>
+        /// The identifier for the Car2_Blinkers_LeftBlinker_LeftBlinkersOff_Message Variable.
+        /// </summary>
+        public const uint Car2_Blinkers_LeftBlinker_LeftBlinkersOff_Message = 15281;
+
+        /// <summary>
+        /// The identifier for the Car2_Blinkers_LeftBlinker_LeftBlinkersOff_Severity Variable.
+        /// </summary>
+        public const uint Car2_Blinkers_LeftBlinker_LeftBlinkersOff_Severity = 15282;
+
+        /// <summary>
+        /// The identifier for the Car2_Blinkers_LeftBlinker_LeftBlinkersOff_PositionOfBlinker Variable.
+        /// </summary>
+        public const uint Car2_Blinkers_LeftBlinker_LeftBlinkersOff_PositionOfBlinker = 15283;
+
+        /// <summary>
+        /// The identifier for the Car2_Tank_TankLevel Variable.
+        /// </summary>
+        public const uint Car2_Tank_TankLevel = 15286;
+
+        /// <summary>
+        /// The identifier for the Car2_Tank_TankLevelCondition_EventId Variable.
+        /// </summary>
+        public const uint Car2_Tank_TankLevelCondition_EventId = 15288;
+
+        /// <summary>
+        /// The identifier for the Car2_Tank_TankLevelCondition_EventType Variable.
+        /// </summary>
+        public const uint Car2_Tank_TankLevelCondition_EventType = 15289;
+
+        /// <summary>
+        /// The identifier for the Car2_Tank_TankLevelCondition_SourceNode Variable.
+        /// </summary>
+        public const uint Car2_Tank_TankLevelCondition_SourceNode = 15290;
+
+        /// <summary>
+        /// The identifier for the Car2_Tank_TankLevelCondition_SourceName Variable.
+        /// </summary>
+        public const uint Car2_Tank_TankLevelCondition_SourceName = 15291;
+
+        /// <summary>
+        /// The identifier for the Car2_Tank_TankLevelCondition_Time Variable.
+        /// </summary>
+        public const uint Car2_Tank_TankLevelCondition_Time = 15292;
+
+        /// <summary>
+        /// The identifier for the Car2_Tank_TankLevelCondition_ReceiveTime Variable.
+        /// </summary>
+        public const uint Car2_Tank_TankLevelCondition_ReceiveTime = 15293;
+
+        /// <summary>
+        /// The identifier for the Car2_Tank_TankLevelCondition_Message Variable.
+        /// </summary>
+        public const uint Car2_Tank_TankLevelCondition_Message = 15295;
+
+        /// <summary>
+        /// The identifier for the Car2_Tank_TankLevelCondition_Severity Variable.
+        /// </summary>
+        public const uint Car2_Tank_TankLevelCondition_Severity = 15296;
+
+        /// <summary>
+        /// The identifier for the Car2_Tank_TankLevelCondition_ConditionClassId Variable.
+        /// </summary>
+        public const uint Car2_Tank_TankLevelCondition_ConditionClassId = 15297;
+
+        /// <summary>
+        /// The identifier for the Car2_Tank_TankLevelCondition_ConditionClassName Variable.
+        /// </summary>
+        public const uint Car2_Tank_TankLevelCondition_ConditionClassName = 15298;
+
+        /// <summary>
+        /// The identifier for the Car2_Tank_TankLevelCondition_ConditionName Variable.
+        /// </summary>
+        public const uint Car2_Tank_TankLevelCondition_ConditionName = 15301;
+
+        /// <summary>
+        /// The identifier for the Car2_Tank_TankLevelCondition_BranchId Variable.
+        /// </summary>
+        public const uint Car2_Tank_TankLevelCondition_BranchId = 15302;
+
+        /// <summary>
+        /// The identifier for the Car2_Tank_TankLevelCondition_Retain Variable.
+        /// </summary>
+        public const uint Car2_Tank_TankLevelCondition_Retain = 15303;
+
+        /// <summary>
+        /// The identifier for the Car2_Tank_TankLevelCondition_EnabledState Variable.
+        /// </summary>
+        public const uint Car2_Tank_TankLevelCondition_EnabledState = 15304;
+
+        /// <summary>
+        /// The identifier for the Car2_Tank_TankLevelCondition_EnabledState_Id Variable.
+        /// </summary>
+        public const uint Car2_Tank_TankLevelCondition_EnabledState_Id = 15305;
+
+        /// <summary>
+        /// The identifier for the Car2_Tank_TankLevelCondition_Quality Variable.
+        /// </summary>
+        public const uint Car2_Tank_TankLevelCondition_Quality = 15313;
+
+        /// <summary>
+        /// The identifier for the Car2_Tank_TankLevelCondition_Quality_SourceTimestamp Variable.
+        /// </summary>
+        public const uint Car2_Tank_TankLevelCondition_Quality_SourceTimestamp = 15314;
+
+        /// <summary>
+        /// The identifier for the Car2_Tank_TankLevelCondition_LastSeverity Variable.
+        /// </summary>
+        public const uint Car2_Tank_TankLevelCondition_LastSeverity = 15315;
+
+        /// <summary>
+        /// The identifier for the Car2_Tank_TankLevelCondition_LastSeverity_SourceTimestamp Variable.
+        /// </summary>
+        public const uint Car2_Tank_TankLevelCondition_LastSeverity_SourceTimestamp = 15316;
+
+        /// <summary>
+        /// The identifier for the Car2_Tank_TankLevelCondition_Comment Variable.
+        /// </summary>
+        public const uint Car2_Tank_TankLevelCondition_Comment = 15317;
+
+        /// <summary>
+        /// The identifier for the Car2_Tank_TankLevelCondition_Comment_SourceTimestamp Variable.
+        /// </summary>
+        public const uint Car2_Tank_TankLevelCondition_Comment_SourceTimestamp = 15318;
+
+        /// <summary>
+        /// The identifier for the Car2_Tank_TankLevelCondition_ClientUserId Variable.
+        /// </summary>
+        public const uint Car2_Tank_TankLevelCondition_ClientUserId = 15319;
+
+        /// <summary>
+        /// The identifier for the Car2_Tank_TankLevelCondition_AddComment_InputArguments Variable.
+        /// </summary>
+        public const uint Car2_Tank_TankLevelCondition_AddComment_InputArguments = 15323;
     }
     #endregion
 
@@ -984,6 +1249,21 @@ namespace buzzfrog.OpcAlarmServer
         /// The identifier for the Car1_Tank_TankLevelCondition_AddComment Method.
         /// </summary>
         public static readonly ExpandedNodeId Car1_Tank_TankLevelCondition_AddComment = new ExpandedNodeId(buzzfrog.OpcAlarmServer.Methods.Car1_Tank_TankLevelCondition_AddComment, buzzfrog.OpcAlarmServer.Namespaces.OpcAlarmServer);
+
+        /// <summary>
+        /// The identifier for the Car2_Tank_TankLevelCondition_Disable Method.
+        /// </summary>
+        public static readonly ExpandedNodeId Car2_Tank_TankLevelCondition_Disable = new ExpandedNodeId(buzzfrog.OpcAlarmServer.Methods.Car2_Tank_TankLevelCondition_Disable, buzzfrog.OpcAlarmServer.Namespaces.OpcAlarmServer);
+
+        /// <summary>
+        /// The identifier for the Car2_Tank_TankLevelCondition_Enable Method.
+        /// </summary>
+        public static readonly ExpandedNodeId Car2_Tank_TankLevelCondition_Enable = new ExpandedNodeId(buzzfrog.OpcAlarmServer.Methods.Car2_Tank_TankLevelCondition_Enable, buzzfrog.OpcAlarmServer.Namespaces.OpcAlarmServer);
+
+        /// <summary>
+        /// The identifier for the Car2_Tank_TankLevelCondition_AddComment Method.
+        /// </summary>
+        public static readonly ExpandedNodeId Car2_Tank_TankLevelCondition_AddComment = new ExpandedNodeId(buzzfrog.OpcAlarmServer.Methods.Car2_Tank_TankLevelCondition_AddComment, buzzfrog.OpcAlarmServer.Namespaces.OpcAlarmServer);
     }
     #endregion
 
@@ -1094,6 +1374,46 @@ namespace buzzfrog.OpcAlarmServer
         /// The identifier for the Car1_Tank_TankLevelCondition Object.
         /// </summary>
         public static readonly ExpandedNodeId Car1_Tank_TankLevelCondition = new ExpandedNodeId(buzzfrog.OpcAlarmServer.Objects.Car1_Tank_TankLevelCondition, buzzfrog.OpcAlarmServer.Namespaces.OpcAlarmServer);
+
+        /// <summary>
+        /// The identifier for the Car2 Object.
+        /// </summary>
+        public static readonly ExpandedNodeId Car2 = new ExpandedNodeId(buzzfrog.OpcAlarmServer.Objects.Car2, buzzfrog.OpcAlarmServer.Namespaces.OpcAlarmServer);
+
+        /// <summary>
+        /// The identifier for the Car2_Blinkers Object.
+        /// </summary>
+        public static readonly ExpandedNodeId Car2_Blinkers = new ExpandedNodeId(buzzfrog.OpcAlarmServer.Objects.Car2_Blinkers, buzzfrog.OpcAlarmServer.Namespaces.OpcAlarmServer);
+
+        /// <summary>
+        /// The identifier for the Car2_Blinkers_LeftBlinker Object.
+        /// </summary>
+        public static readonly ExpandedNodeId Car2_Blinkers_LeftBlinker = new ExpandedNodeId(buzzfrog.OpcAlarmServer.Objects.Car2_Blinkers_LeftBlinker, buzzfrog.OpcAlarmServer.Namespaces.OpcAlarmServer);
+
+        /// <summary>
+        /// The identifier for the Car2_Blinkers_LeftBlinker_LeftBlinkersOn Object.
+        /// </summary>
+        public static readonly ExpandedNodeId Car2_Blinkers_LeftBlinker_LeftBlinkersOn = new ExpandedNodeId(buzzfrog.OpcAlarmServer.Objects.Car2_Blinkers_LeftBlinker_LeftBlinkersOn, buzzfrog.OpcAlarmServer.Namespaces.OpcAlarmServer);
+
+        /// <summary>
+        /// The identifier for the Car2_Blinkers_LeftBlinker_LeftBlinkersOff Object.
+        /// </summary>
+        public static readonly ExpandedNodeId Car2_Blinkers_LeftBlinker_LeftBlinkersOff = new ExpandedNodeId(buzzfrog.OpcAlarmServer.Objects.Car2_Blinkers_LeftBlinker_LeftBlinkersOff, buzzfrog.OpcAlarmServer.Namespaces.OpcAlarmServer);
+
+        /// <summary>
+        /// The identifier for the Car2_Blinkers_RightBlinker Object.
+        /// </summary>
+        public static readonly ExpandedNodeId Car2_Blinkers_RightBlinker = new ExpandedNodeId(buzzfrog.OpcAlarmServer.Objects.Car2_Blinkers_RightBlinker, buzzfrog.OpcAlarmServer.Namespaces.OpcAlarmServer);
+
+        /// <summary>
+        /// The identifier for the Car2_Tank Object.
+        /// </summary>
+        public static readonly ExpandedNodeId Car2_Tank = new ExpandedNodeId(buzzfrog.OpcAlarmServer.Objects.Car2_Tank, buzzfrog.OpcAlarmServer.Namespaces.OpcAlarmServer);
+
+        /// <summary>
+        /// The identifier for the Car2_Tank_TankLevelCondition Object.
+        /// </summary>
+        public static readonly ExpandedNodeId Car2_Tank_TankLevelCondition = new ExpandedNodeId(buzzfrog.OpcAlarmServer.Objects.Car2_Tank_TankLevelCondition, buzzfrog.OpcAlarmServer.Namespaces.OpcAlarmServer);
     }
     #endregion
 
@@ -1824,6 +2144,216 @@ namespace buzzfrog.OpcAlarmServer
         /// The identifier for the Car1_Tank_TankLevelCondition_AddComment_InputArguments Variable.
         /// </summary>
         public static readonly ExpandedNodeId Car1_Tank_TankLevelCondition_AddComment_InputArguments = new ExpandedNodeId(buzzfrog.OpcAlarmServer.Variables.Car1_Tank_TankLevelCondition_AddComment_InputArguments, buzzfrog.OpcAlarmServer.Namespaces.OpcAlarmServer);
+
+        /// <summary>
+        /// The identifier for the Car2_Blinkers_LeftBlinker_LeftBlinkersOn_EventId Variable.
+        /// </summary>
+        public static readonly ExpandedNodeId Car2_Blinkers_LeftBlinker_LeftBlinkersOn_EventId = new ExpandedNodeId(buzzfrog.OpcAlarmServer.Variables.Car2_Blinkers_LeftBlinker_LeftBlinkersOn_EventId, buzzfrog.OpcAlarmServer.Namespaces.OpcAlarmServer);
+
+        /// <summary>
+        /// The identifier for the Car2_Blinkers_LeftBlinker_LeftBlinkersOn_EventType Variable.
+        /// </summary>
+        public static readonly ExpandedNodeId Car2_Blinkers_LeftBlinker_LeftBlinkersOn_EventType = new ExpandedNodeId(buzzfrog.OpcAlarmServer.Variables.Car2_Blinkers_LeftBlinker_LeftBlinkersOn_EventType, buzzfrog.OpcAlarmServer.Namespaces.OpcAlarmServer);
+
+        /// <summary>
+        /// The identifier for the Car2_Blinkers_LeftBlinker_LeftBlinkersOn_SourceNode Variable.
+        /// </summary>
+        public static readonly ExpandedNodeId Car2_Blinkers_LeftBlinker_LeftBlinkersOn_SourceNode = new ExpandedNodeId(buzzfrog.OpcAlarmServer.Variables.Car2_Blinkers_LeftBlinker_LeftBlinkersOn_SourceNode, buzzfrog.OpcAlarmServer.Namespaces.OpcAlarmServer);
+
+        /// <summary>
+        /// The identifier for the Car2_Blinkers_LeftBlinker_LeftBlinkersOn_SourceName Variable.
+        /// </summary>
+        public static readonly ExpandedNodeId Car2_Blinkers_LeftBlinker_LeftBlinkersOn_SourceName = new ExpandedNodeId(buzzfrog.OpcAlarmServer.Variables.Car2_Blinkers_LeftBlinker_LeftBlinkersOn_SourceName, buzzfrog.OpcAlarmServer.Namespaces.OpcAlarmServer);
+
+        /// <summary>
+        /// The identifier for the Car2_Blinkers_LeftBlinker_LeftBlinkersOn_Time Variable.
+        /// </summary>
+        public static readonly ExpandedNodeId Car2_Blinkers_LeftBlinker_LeftBlinkersOn_Time = new ExpandedNodeId(buzzfrog.OpcAlarmServer.Variables.Car2_Blinkers_LeftBlinker_LeftBlinkersOn_Time, buzzfrog.OpcAlarmServer.Namespaces.OpcAlarmServer);
+
+        /// <summary>
+        /// The identifier for the Car2_Blinkers_LeftBlinker_LeftBlinkersOn_ReceiveTime Variable.
+        /// </summary>
+        public static readonly ExpandedNodeId Car2_Blinkers_LeftBlinker_LeftBlinkersOn_ReceiveTime = new ExpandedNodeId(buzzfrog.OpcAlarmServer.Variables.Car2_Blinkers_LeftBlinker_LeftBlinkersOn_ReceiveTime, buzzfrog.OpcAlarmServer.Namespaces.OpcAlarmServer);
+
+        /// <summary>
+        /// The identifier for the Car2_Blinkers_LeftBlinker_LeftBlinkersOn_Message Variable.
+        /// </summary>
+        public static readonly ExpandedNodeId Car2_Blinkers_LeftBlinker_LeftBlinkersOn_Message = new ExpandedNodeId(buzzfrog.OpcAlarmServer.Variables.Car2_Blinkers_LeftBlinker_LeftBlinkersOn_Message, buzzfrog.OpcAlarmServer.Namespaces.OpcAlarmServer);
+
+        /// <summary>
+        /// The identifier for the Car2_Blinkers_LeftBlinker_LeftBlinkersOn_Severity Variable.
+        /// </summary>
+        public static readonly ExpandedNodeId Car2_Blinkers_LeftBlinker_LeftBlinkersOn_Severity = new ExpandedNodeId(buzzfrog.OpcAlarmServer.Variables.Car2_Blinkers_LeftBlinker_LeftBlinkersOn_Severity, buzzfrog.OpcAlarmServer.Namespaces.OpcAlarmServer);
+
+        /// <summary>
+        /// The identifier for the Car2_Blinkers_LeftBlinker_LeftBlinkersOn_PositionOfBlinker Variable.
+        /// </summary>
+        public static readonly ExpandedNodeId Car2_Blinkers_LeftBlinker_LeftBlinkersOn_PositionOfBlinker = new ExpandedNodeId(buzzfrog.OpcAlarmServer.Variables.Car2_Blinkers_LeftBlinker_LeftBlinkersOn_PositionOfBlinker, buzzfrog.OpcAlarmServer.Namespaces.OpcAlarmServer);
+
+        /// <summary>
+        /// The identifier for the Car2_Blinkers_LeftBlinker_LeftBlinkersOff_EventId Variable.
+        /// </summary>
+        public static readonly ExpandedNodeId Car2_Blinkers_LeftBlinker_LeftBlinkersOff_EventId = new ExpandedNodeId(buzzfrog.OpcAlarmServer.Variables.Car2_Blinkers_LeftBlinker_LeftBlinkersOff_EventId, buzzfrog.OpcAlarmServer.Namespaces.OpcAlarmServer);
+
+        /// <summary>
+        /// The identifier for the Car2_Blinkers_LeftBlinker_LeftBlinkersOff_EventType Variable.
+        /// </summary>
+        public static readonly ExpandedNodeId Car2_Blinkers_LeftBlinker_LeftBlinkersOff_EventType = new ExpandedNodeId(buzzfrog.OpcAlarmServer.Variables.Car2_Blinkers_LeftBlinker_LeftBlinkersOff_EventType, buzzfrog.OpcAlarmServer.Namespaces.OpcAlarmServer);
+
+        /// <summary>
+        /// The identifier for the Car2_Blinkers_LeftBlinker_LeftBlinkersOff_SourceNode Variable.
+        /// </summary>
+        public static readonly ExpandedNodeId Car2_Blinkers_LeftBlinker_LeftBlinkersOff_SourceNode = new ExpandedNodeId(buzzfrog.OpcAlarmServer.Variables.Car2_Blinkers_LeftBlinker_LeftBlinkersOff_SourceNode, buzzfrog.OpcAlarmServer.Namespaces.OpcAlarmServer);
+
+        /// <summary>
+        /// The identifier for the Car2_Blinkers_LeftBlinker_LeftBlinkersOff_SourceName Variable.
+        /// </summary>
+        public static readonly ExpandedNodeId Car2_Blinkers_LeftBlinker_LeftBlinkersOff_SourceName = new ExpandedNodeId(buzzfrog.OpcAlarmServer.Variables.Car2_Blinkers_LeftBlinker_LeftBlinkersOff_SourceName, buzzfrog.OpcAlarmServer.Namespaces.OpcAlarmServer);
+
+        /// <summary>
+        /// The identifier for the Car2_Blinkers_LeftBlinker_LeftBlinkersOff_Time Variable.
+        /// </summary>
+        public static readonly ExpandedNodeId Car2_Blinkers_LeftBlinker_LeftBlinkersOff_Time = new ExpandedNodeId(buzzfrog.OpcAlarmServer.Variables.Car2_Blinkers_LeftBlinker_LeftBlinkersOff_Time, buzzfrog.OpcAlarmServer.Namespaces.OpcAlarmServer);
+
+        /// <summary>
+        /// The identifier for the Car2_Blinkers_LeftBlinker_LeftBlinkersOff_ReceiveTime Variable.
+        /// </summary>
+        public static readonly ExpandedNodeId Car2_Blinkers_LeftBlinker_LeftBlinkersOff_ReceiveTime = new ExpandedNodeId(buzzfrog.OpcAlarmServer.Variables.Car2_Blinkers_LeftBlinker_LeftBlinkersOff_ReceiveTime, buzzfrog.OpcAlarmServer.Namespaces.OpcAlarmServer);
+
+        /// <summary>
+        /// The identifier for the Car2_Blinkers_LeftBlinker_LeftBlinkersOff_Message Variable.
+        /// </summary>
+        public static readonly ExpandedNodeId Car2_Blinkers_LeftBlinker_LeftBlinkersOff_Message = new ExpandedNodeId(buzzfrog.OpcAlarmServer.Variables.Car2_Blinkers_LeftBlinker_LeftBlinkersOff_Message, buzzfrog.OpcAlarmServer.Namespaces.OpcAlarmServer);
+
+        /// <summary>
+        /// The identifier for the Car2_Blinkers_LeftBlinker_LeftBlinkersOff_Severity Variable.
+        /// </summary>
+        public static readonly ExpandedNodeId Car2_Blinkers_LeftBlinker_LeftBlinkersOff_Severity = new ExpandedNodeId(buzzfrog.OpcAlarmServer.Variables.Car2_Blinkers_LeftBlinker_LeftBlinkersOff_Severity, buzzfrog.OpcAlarmServer.Namespaces.OpcAlarmServer);
+
+        /// <summary>
+        /// The identifier for the Car2_Blinkers_LeftBlinker_LeftBlinkersOff_PositionOfBlinker Variable.
+        /// </summary>
+        public static readonly ExpandedNodeId Car2_Blinkers_LeftBlinker_LeftBlinkersOff_PositionOfBlinker = new ExpandedNodeId(buzzfrog.OpcAlarmServer.Variables.Car2_Blinkers_LeftBlinker_LeftBlinkersOff_PositionOfBlinker, buzzfrog.OpcAlarmServer.Namespaces.OpcAlarmServer);
+
+        /// <summary>
+        /// The identifier for the Car2_Tank_TankLevel Variable.
+        /// </summary>
+        public static readonly ExpandedNodeId Car2_Tank_TankLevel = new ExpandedNodeId(buzzfrog.OpcAlarmServer.Variables.Car2_Tank_TankLevel, buzzfrog.OpcAlarmServer.Namespaces.OpcAlarmServer);
+
+        /// <summary>
+        /// The identifier for the Car2_Tank_TankLevelCondition_EventId Variable.
+        /// </summary>
+        public static readonly ExpandedNodeId Car2_Tank_TankLevelCondition_EventId = new ExpandedNodeId(buzzfrog.OpcAlarmServer.Variables.Car2_Tank_TankLevelCondition_EventId, buzzfrog.OpcAlarmServer.Namespaces.OpcAlarmServer);
+
+        /// <summary>
+        /// The identifier for the Car2_Tank_TankLevelCondition_EventType Variable.
+        /// </summary>
+        public static readonly ExpandedNodeId Car2_Tank_TankLevelCondition_EventType = new ExpandedNodeId(buzzfrog.OpcAlarmServer.Variables.Car2_Tank_TankLevelCondition_EventType, buzzfrog.OpcAlarmServer.Namespaces.OpcAlarmServer);
+
+        /// <summary>
+        /// The identifier for the Car2_Tank_TankLevelCondition_SourceNode Variable.
+        /// </summary>
+        public static readonly ExpandedNodeId Car2_Tank_TankLevelCondition_SourceNode = new ExpandedNodeId(buzzfrog.OpcAlarmServer.Variables.Car2_Tank_TankLevelCondition_SourceNode, buzzfrog.OpcAlarmServer.Namespaces.OpcAlarmServer);
+
+        /// <summary>
+        /// The identifier for the Car2_Tank_TankLevelCondition_SourceName Variable.
+        /// </summary>
+        public static readonly ExpandedNodeId Car2_Tank_TankLevelCondition_SourceName = new ExpandedNodeId(buzzfrog.OpcAlarmServer.Variables.Car2_Tank_TankLevelCondition_SourceName, buzzfrog.OpcAlarmServer.Namespaces.OpcAlarmServer);
+
+        /// <summary>
+        /// The identifier for the Car2_Tank_TankLevelCondition_Time Variable.
+        /// </summary>
+        public static readonly ExpandedNodeId Car2_Tank_TankLevelCondition_Time = new ExpandedNodeId(buzzfrog.OpcAlarmServer.Variables.Car2_Tank_TankLevelCondition_Time, buzzfrog.OpcAlarmServer.Namespaces.OpcAlarmServer);
+
+        /// <summary>
+        /// The identifier for the Car2_Tank_TankLevelCondition_ReceiveTime Variable.
+        /// </summary>
+        public static readonly ExpandedNodeId Car2_Tank_TankLevelCondition_ReceiveTime = new ExpandedNodeId(buzzfrog.OpcAlarmServer.Variables.Car2_Tank_TankLevelCondition_ReceiveTime, buzzfrog.OpcAlarmServer.Namespaces.OpcAlarmServer);
+
+        /// <summary>
+        /// The identifier for the Car2_Tank_TankLevelCondition_Message Variable.
+        /// </summary>
+        public static readonly ExpandedNodeId Car2_Tank_TankLevelCondition_Message = new ExpandedNodeId(buzzfrog.OpcAlarmServer.Variables.Car2_Tank_TankLevelCondition_Message, buzzfrog.OpcAlarmServer.Namespaces.OpcAlarmServer);
+
+        /// <summary>
+        /// The identifier for the Car2_Tank_TankLevelCondition_Severity Variable.
+        /// </summary>
+        public static readonly ExpandedNodeId Car2_Tank_TankLevelCondition_Severity = new ExpandedNodeId(buzzfrog.OpcAlarmServer.Variables.Car2_Tank_TankLevelCondition_Severity, buzzfrog.OpcAlarmServer.Namespaces.OpcAlarmServer);
+
+        /// <summary>
+        /// The identifier for the Car2_Tank_TankLevelCondition_ConditionClassId Variable.
+        /// </summary>
+        public static readonly ExpandedNodeId Car2_Tank_TankLevelCondition_ConditionClassId = new ExpandedNodeId(buzzfrog.OpcAlarmServer.Variables.Car2_Tank_TankLevelCondition_ConditionClassId, buzzfrog.OpcAlarmServer.Namespaces.OpcAlarmServer);
+
+        /// <summary>
+        /// The identifier for the Car2_Tank_TankLevelCondition_ConditionClassName Variable.
+        /// </summary>
+        public static readonly ExpandedNodeId Car2_Tank_TankLevelCondition_ConditionClassName = new ExpandedNodeId(buzzfrog.OpcAlarmServer.Variables.Car2_Tank_TankLevelCondition_ConditionClassName, buzzfrog.OpcAlarmServer.Namespaces.OpcAlarmServer);
+
+        /// <summary>
+        /// The identifier for the Car2_Tank_TankLevelCondition_ConditionName Variable.
+        /// </summary>
+        public static readonly ExpandedNodeId Car2_Tank_TankLevelCondition_ConditionName = new ExpandedNodeId(buzzfrog.OpcAlarmServer.Variables.Car2_Tank_TankLevelCondition_ConditionName, buzzfrog.OpcAlarmServer.Namespaces.OpcAlarmServer);
+
+        /// <summary>
+        /// The identifier for the Car2_Tank_TankLevelCondition_BranchId Variable.
+        /// </summary>
+        public static readonly ExpandedNodeId Car2_Tank_TankLevelCondition_BranchId = new ExpandedNodeId(buzzfrog.OpcAlarmServer.Variables.Car2_Tank_TankLevelCondition_BranchId, buzzfrog.OpcAlarmServer.Namespaces.OpcAlarmServer);
+
+        /// <summary>
+        /// The identifier for the Car2_Tank_TankLevelCondition_Retain Variable.
+        /// </summary>
+        public static readonly ExpandedNodeId Car2_Tank_TankLevelCondition_Retain = new ExpandedNodeId(buzzfrog.OpcAlarmServer.Variables.Car2_Tank_TankLevelCondition_Retain, buzzfrog.OpcAlarmServer.Namespaces.OpcAlarmServer);
+
+        /// <summary>
+        /// The identifier for the Car2_Tank_TankLevelCondition_EnabledState Variable.
+        /// </summary>
+        public static readonly ExpandedNodeId Car2_Tank_TankLevelCondition_EnabledState = new ExpandedNodeId(buzzfrog.OpcAlarmServer.Variables.Car2_Tank_TankLevelCondition_EnabledState, buzzfrog.OpcAlarmServer.Namespaces.OpcAlarmServer);
+
+        /// <summary>
+        /// The identifier for the Car2_Tank_TankLevelCondition_EnabledState_Id Variable.
+        /// </summary>
+        public static readonly ExpandedNodeId Car2_Tank_TankLevelCondition_EnabledState_Id = new ExpandedNodeId(buzzfrog.OpcAlarmServer.Variables.Car2_Tank_TankLevelCondition_EnabledState_Id, buzzfrog.OpcAlarmServer.Namespaces.OpcAlarmServer);
+
+        /// <summary>
+        /// The identifier for the Car2_Tank_TankLevelCondition_Quality Variable.
+        /// </summary>
+        public static readonly ExpandedNodeId Car2_Tank_TankLevelCondition_Quality = new ExpandedNodeId(buzzfrog.OpcAlarmServer.Variables.Car2_Tank_TankLevelCondition_Quality, buzzfrog.OpcAlarmServer.Namespaces.OpcAlarmServer);
+
+        /// <summary>
+        /// The identifier for the Car2_Tank_TankLevelCondition_Quality_SourceTimestamp Variable.
+        /// </summary>
+        public static readonly ExpandedNodeId Car2_Tank_TankLevelCondition_Quality_SourceTimestamp = new ExpandedNodeId(buzzfrog.OpcAlarmServer.Variables.Car2_Tank_TankLevelCondition_Quality_SourceTimestamp, buzzfrog.OpcAlarmServer.Namespaces.OpcAlarmServer);
+
+        /// <summary>
+        /// The identifier for the Car2_Tank_TankLevelCondition_LastSeverity Variable.
+        /// </summary>
+        public static readonly ExpandedNodeId Car2_Tank_TankLevelCondition_LastSeverity = new ExpandedNodeId(buzzfrog.OpcAlarmServer.Variables.Car2_Tank_TankLevelCondition_LastSeverity, buzzfrog.OpcAlarmServer.Namespaces.OpcAlarmServer);
+
+        /// <summary>
+        /// The identifier for the Car2_Tank_TankLevelCondition_LastSeverity_SourceTimestamp Variable.
+        /// </summary>
+        public static readonly ExpandedNodeId Car2_Tank_TankLevelCondition_LastSeverity_SourceTimestamp = new ExpandedNodeId(buzzfrog.OpcAlarmServer.Variables.Car2_Tank_TankLevelCondition_LastSeverity_SourceTimestamp, buzzfrog.OpcAlarmServer.Namespaces.OpcAlarmServer);
+
+        /// <summary>
+        /// The identifier for the Car2_Tank_TankLevelCondition_Comment Variable.
+        /// </summary>
+        public static readonly ExpandedNodeId Car2_Tank_TankLevelCondition_Comment = new ExpandedNodeId(buzzfrog.OpcAlarmServer.Variables.Car2_Tank_TankLevelCondition_Comment, buzzfrog.OpcAlarmServer.Namespaces.OpcAlarmServer);
+
+        /// <summary>
+        /// The identifier for the Car2_Tank_TankLevelCondition_Comment_SourceTimestamp Variable.
+        /// </summary>
+        public static readonly ExpandedNodeId Car2_Tank_TankLevelCondition_Comment_SourceTimestamp = new ExpandedNodeId(buzzfrog.OpcAlarmServer.Variables.Car2_Tank_TankLevelCondition_Comment_SourceTimestamp, buzzfrog.OpcAlarmServer.Namespaces.OpcAlarmServer);
+
+        /// <summary>
+        /// The identifier for the Car2_Tank_TankLevelCondition_ClientUserId Variable.
+        /// </summary>
+        public static readonly ExpandedNodeId Car2_Tank_TankLevelCondition_ClientUserId = new ExpandedNodeId(buzzfrog.OpcAlarmServer.Variables.Car2_Tank_TankLevelCondition_ClientUserId, buzzfrog.OpcAlarmServer.Namespaces.OpcAlarmServer);
+
+        /// <summary>
+        /// The identifier for the Car2_Tank_TankLevelCondition_AddComment_InputArguments Variable.
+        /// </summary>
+        public static readonly ExpandedNodeId Car2_Tank_TankLevelCondition_AddComment_InputArguments = new ExpandedNodeId(buzzfrog.OpcAlarmServer.Variables.Car2_Tank_TankLevelCondition_AddComment_InputArguments, buzzfrog.OpcAlarmServer.Namespaces.OpcAlarmServer);
     }
     #endregion
 
@@ -1853,6 +2383,11 @@ namespace buzzfrog.OpcAlarmServer
         /// The BrowseName for the Car1 component.
         /// </summary>
         public const string Car1 = "Car #1";
+
+        /// <summary>
+        /// The BrowseName for the Car2 component.
+        /// </summary>
+        public const string Car2 = "Car #2";
 
         /// <summary>
         /// The BrowseName for the CarBlinkersType component.

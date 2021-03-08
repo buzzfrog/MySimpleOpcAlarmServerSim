@@ -79,4 +79,14 @@
     </opc:References>
   </opc:Object>
 
+  <opc:Object SymbolicName="Car2" TypeDefinition="CarType" SupportsEvents="true">
+    <opc:BrowseName>Car #2</opc:BrowseName>
+    <opc:References>
+      <opc:Reference IsInverse="true">
+        <opc:ReferenceType>ua:Organizes</opc:ReferenceType>
+        <opc:TargetId>ua:ObjectsFolder</opc:TargetId>
+      </opc:Reference>
+    </opc:References>
+  </opc:Object>
+
 </opc:ModelDesign>

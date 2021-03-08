@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using MyNs = buzzfrog.OpcAlarmServer;
 
 namespace OpcAlarmServer
@@ -11,6 +12,7 @@ namespace OpcAlarmServer
     class OpcAlarmServerNodeManager : CustomNodeManager2
     {
         private OpcAlarmServerConfiguration _configuration;
+        private Timer _eventsSimulationTimer;
 
         public OpcAlarmServerNodeManager(IServerInternal server, ApplicationConfiguration configuration) : base(server, configuration) 
         {
@@ -45,6 +47,8 @@ namespace OpcAlarmServer
             {
                 LoadPredefinedNodes(SystemContext, externalReferences);
             }
+
+            _eventsSimulationTimer = new Timer(OnRaiseSystemEvents, null, 1000, 1000);
         }
 
         /// <summary>
@@ -62,5 +66,46 @@ namespace OpcAlarmServer
             return predefinedNodes;
         }
 
+        /// <summary>
+        /// Creates simulated events
+        /// </summary>
+        /// <param name="state"></param>
+        private void OnRaiseSystemEvents(object state)
+        {
+            try
+            {
+                SystemEventState e = new SystemEventState(null);
+
+                e.Initialize(
+                    SystemContext,
+                    null,
+                    EventSeverity.Medium,
+                    new LocalizedText("Raising Events"));
+
+                e.SetChildValue(SystemContext, BrowseNames.SourceNode, ObjectIds.Server, false);
+                e.SetChildValue(SystemContext, BrowseNames.SourceName, "Internal", false);
+
+                Server.ReportEvent(e);
+
+                AuditEventState ae = new AuditEventState(null);
+
+                ae.Initialize(
+                    SystemContext,
+                    null,
+                    EventSeverity.Medium,
+                    new LocalizedText("Events Raised"),
+                    true,
+                    DateTime.UtcNow);
+
+                ae.SetChildValue(SystemContext, BrowseNames.SourceNode, ObjectIds.Server, false);
+                ae.SetChildValue(SystemContext, BrowseNames.SourceName, "Internal", false);
+
+                Server.ReportEvent(ae);
+            }
+            catch (Exception e)
+            {
+                Utils.Trace(e, "Unexpected error in OnRaiseSystemEvents");
+            }
+        }
     }
 }
