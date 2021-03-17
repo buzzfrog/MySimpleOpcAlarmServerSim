@@ -1,9 +1,0 @@
-BlinkersOffEventType,15057,ObjectType
-BlinkersOnEventType,15013,ObjectType
-Car1,15002,Object
-Car2,15259,Object
-CarBlinkersType,15004,ObjectType
-CarBlinkerType,15003,ObjectType
-CarType,15001,ObjectType
-LessThan5LiterInTankConditionType,15144,ObjectType
-TankType,15101,ObjectType

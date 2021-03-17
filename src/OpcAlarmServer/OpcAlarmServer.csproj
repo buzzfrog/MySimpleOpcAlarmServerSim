@@ -6,14 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="buzzfrog.OpcAlarmServer.PredefinedNodes.uanodes" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="buzzfrog.OpcAlarmServer.PredefinedNodes.uanodes" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="OPCFoundation.NetStandard.Opc.Ua" Version="1.4.365.48" />
   </ItemGroup>
 
