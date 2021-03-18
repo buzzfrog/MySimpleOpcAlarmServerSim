@@ -23,5 +23,19 @@ namespace OpcAlarmServer.VendingMachineBackendService
         {
             return (VendingMachineBackendAlarm)MemberwiseClone();
         }
+
+        internal bool SetStateBits(VendingMachineConditionStates bits, bool isSet)
+        {
+            if (isSet)
+            {
+                bool currentlySet = ((this.State & bits) == bits);
+                this.State |= bits;
+                return !currentlySet;
+            }
+
+            bool currentlyCleared = ((this.State & ~bits) == this.State);
+            this.State &= ~bits;
+            return !currentlyCleared;
+        }
     }
 }

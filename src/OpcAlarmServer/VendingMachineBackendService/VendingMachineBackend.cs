@@ -58,5 +58,68 @@ namespace OpcAlarmServer.VendingMachineBackendService
             }
 
         }
+
+        internal void DoSimulation(long simulationRunCounter)
+        {
+            List<VendingMachineBackendAlarm> snapshots = new List<VendingMachineBackendAlarm>();
+
+            lock(_vendingMachineBackendAlarms)
+            {
+                foreach (var vendingMachineAlarm in _vendingMachineBackendAlarms)
+                {
+                    UpdateAlarm(vendingMachineAlarm, simulationRunCounter, snapshots);
+                }
+            }
+
+            foreach (var snapshot in snapshots)
+            {
+                ReportAlarmChange(snapshot);
+            }
+
+        }
+
+        private void ReportAlarmChange(VendingMachineBackendAlarm vendingMachineBackendAlarm)
+        {
+            OnAlarmChanged!.Invoke(vendingMachineBackendAlarm);
+        }
+
+        private void UpdateAlarm(VendingMachineBackendAlarm vendingMachineAlarm, long simulationRunCounter, List<VendingMachineBackendAlarm> snapshots)
+        {
+            // ignore disabled alarms
+            if((vendingMachineAlarm.State & VendingMachineConditionStates.Enabled) == 0)
+            {
+                return;
+            }
+
+            // TEST
+            if(simulationRunCounter % 12 == 0)
+            {
+                // is alarm active?
+                if((vendingMachineAlarm.State & VendingMachineConditionStates.Active) == 0)
+                {
+                    // no - alarm is not active
+                    vendingMachineAlarm.SetStateBits(VendingMachineConditionStates.Active, true);
+                    vendingMachineAlarm.SetStateBits(VendingMachineConditionStates.Acknowledged | VendingMachineConditionStates.Confirmed, false);
+                    vendingMachineAlarm.Severity = EventSeverity.Low;
+                    vendingMachineAlarm.ActiveTime = DateTime.UtcNow;
+
+                    vendingMachineAlarm.Time = DateTime.UtcNow;
+                    vendingMachineAlarm.Reason = $"Activated {DateTime.UtcNow.Ticks}";
+
+                }
+                else
+                {
+                    // yes - alarm is active
+                    vendingMachineAlarm.SetStateBits(VendingMachineConditionStates.Active, false);
+                    vendingMachineAlarm.SetStateBits(VendingMachineConditionStates.Acknowledged | VendingMachineConditionStates.Confirmed, false);
+                    vendingMachineAlarm.Severity = EventSeverity.Low;
+
+                    vendingMachineAlarm.Time = DateTime.UtcNow;
+                    vendingMachineAlarm.Reason = $"Deactivated {DateTime.UtcNow.Ticks}";
+                }
+
+                snapshots.Add(vendingMachineAlarm.CreateSnapshot());
+            }
+        }
     }
 }

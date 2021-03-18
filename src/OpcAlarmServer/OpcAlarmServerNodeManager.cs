@@ -20,9 +20,11 @@ namespace OpcAlarmServer
         private List<NodeState> _rootNotifiers;
         private IServerInternal _server;
         private ServerSystemContext _defaultSystemContext;
-
         private Dictionary<string, VendingMachineState> _vendingMachines = new Dictionary<string, VendingMachineState>();
 
+        /// <summary>
+        /// Initializes the node manager.
+        /// </summary>
         public OpcAlarmServerNodeManager(IServerInternal server, ApplicationConfiguration configuration) : base(server, configuration) 
         {
             _server = server;
@@ -45,6 +47,13 @@ namespace OpcAlarmServer
             }
         }
 
+        #region CustomNodeManager2 overrides
+        /// <summary>
+        /// Creates a new set of monitored items for a set of variables.
+        /// </summary>
+        /// <remarks>
+        /// This method only handles data change subscriptions. Event subscriptions are created by the SDK.
+        /// </remarks>
         public override void CreateMonitoredItems(
             OperationContext context,
             uint subscriptionId,
@@ -151,6 +160,9 @@ namespace OpcAlarmServer
             OnCreateMonitoredItemsComplete(systemContext, createdItems);
         }
 
+        /// <summary>
+        /// Verifies that the specified node exists.
+        /// </summary>
         protected override NodeState ValidateNode(
              ServerSystemContext context,
              NodeHandle handle,
@@ -170,6 +182,13 @@ namespace OpcAlarmServer
             return handle.Node;
         }
 
+        /// <summary>
+        /// Subscribes or unsubscribes to events produced by all event sources.
+        /// </summary>
+        /// <remarks>
+        /// This method is called when a event subscription is created or deleted. The node 
+        /// manager must start/stop reporting events for all objects that it manages.
+        /// </remarks>
         public override ServiceResult SubscribeToAllEvents(
              Opc.Ua.Server.OperationContext context,
              uint subscriptionId,
@@ -195,6 +214,14 @@ namespace OpcAlarmServer
             }
         }
 
+        /// <summary>
+        /// Subscribes to events.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="source">The source.</param>
+        /// <param name="monitoredItem">The monitored item.</param>
+        /// <param name="unsubscribe">if set to <c>true</c> [unsubscribe].</param>
+        /// <returns>Any error code.</returns>
         protected override ServiceResult SubscribeToEvents(
            ServerSystemContext context,
            NodeState source,
@@ -291,7 +318,7 @@ namespace OpcAlarmServer
                 AddRootNotifier(_vendingMachinesFolder);
 
                 // create a number of vendingmachines
-                for (int postNameNumber = 0; postNameNumber < 10; postNameNumber++)
+                for (int postNameNumber = 0; postNameNumber < 100; postNameNumber++)
                 {
                     VendingMachineState vendingMachine;
 
@@ -309,11 +336,17 @@ namespace OpcAlarmServer
             }
 
             AddPredefinedNode(SystemContext, _vendingMachinesFolder);
-
+            _system.StartSimulation();
             //_eventsSimulationTimer = new Timer(OnRaiseSystemEvents, null, 1000, 1000);
         }
 
-
+        /// <summary>
+        /// Tells the node manager to refresh any conditions associated with the specified monitored items.
+        /// </summary>
+        /// <remarks>
+        /// This method is called when the condition refresh method is called for a subscription.
+        /// The node manager must create a refresh event for each condition monitored by the subscription.
+        /// </remarks>
         public override ServiceResult ConditionRefresh(
             OperationContext context,
             IList<IEventMonitoredItem> monitoredItems)
@@ -367,6 +400,14 @@ namespace OpcAlarmServer
             return ServiceResult.Good;
         }
 
+        /// <summary>
+        /// Adds a root notifier.
+        /// </summary>
+        /// <param name="notifier">The notifier.</param>
+        /// <remarks>
+        /// A root notifier is a notifier owned by the NodeManager that is not the target of a 
+        /// HasNotifier reference. These nodes need to be linked directly to the Server object.
+        /// </remarks>
         protected override void AddRootNotifier(NodeState notifier)
         {
             if (_rootNotifiers == null)
@@ -414,6 +455,19 @@ namespace OpcAlarmServer
             }
         }
 
+        /// <summary>
+        /// Creates the NodeId for the specified node.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="node">The node.</param>
+        /// <returns>The new NodeId.</returns>
+        /// <remarks>
+        /// This method is called by the NodeState.Create() method which initializes a Node from
+        /// the type model. During initialization a number of child nodes are created and need to 
+        /// have NodeIds assigned to them. This implementation constructs NodeIds by constructing
+        /// strings. Other implementations could assign unique integers or Guids and save the new
+        /// Node in a dictionary for later lookup.
+        /// </remarks>
         public override NodeId New(ISystemContext context, NodeState node)
         {
             return new NodeId(++_nodeIdCounter, NamespaceIndex);
@@ -471,5 +525,6 @@ namespace OpcAlarmServer
                 Utils.Trace(e, "Unexpected error in OnRaiseSystemEvents");
             }
         }
+        #endregion
     }
 }
