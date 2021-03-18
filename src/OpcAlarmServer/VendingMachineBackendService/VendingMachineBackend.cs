@@ -1,4 +1,5 @@
-﻿using OpcAlarmServer.Model;
+﻿using Opc.Ua;
+using OpcAlarmServer.Model;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -27,15 +28,35 @@ namespace OpcAlarmServer.VendingMachineBackendService
             alarm.Name = name;
             alarm.Reason = "Alarm created.";
             alarm.Time = DateTime.UtcNow;
-            alarm.Severity = 300;
+            alarm.Severity = EventSeverity.Medium;
             alarm.State = VendingMachineConditionStates.Active | VendingMachineConditionStates.Enabled;
             alarm.EnableTime = DateTime.UtcNow;
             alarm.ActiveTime = DateTime.UtcNow;
 
-            lock(_vendingMachineBackendAlarms)
+            lock (_vendingMachineBackendAlarms)
             {
                 _vendingMachineBackendAlarms.Add(alarm);
             }
+        }
+
+        internal void Refresh()
+        {
+            List<VendingMachineBackendAlarm> snapshots = new List<VendingMachineBackendAlarm>();
+
+            lock (_vendingMachineBackendAlarms)
+            {
+                foreach (var alarm in _vendingMachineBackendAlarms)
+                {
+                    snapshots.Add(alarm.CreateSnapshot());
+                }
+
+            }
+
+            foreach (var snapshotAlarm in snapshots)
+            {
+                OnAlarmChanged!.Invoke(snapshotAlarm);
+            }
+
         }
     }
 }
