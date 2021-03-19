@@ -66,6 +66,9 @@ namespace OpcAlarmServer.Model
 
         }
 
+        // COMMENT: Here is the "real" OPC Alarms created and updated.
+        // COMMENT: It uses the BackendAlarm to describe how this alarm should be created
+        // COMMENT: Can we use the BackendAlarm has the source for changes in our script?
         private void OnAlarmChanged(VendingMachineBackendAlarm alarm)
         {
             lock (_nodeManager.Lock)
@@ -155,6 +158,7 @@ namespace OpcAlarmServer.Model
         {
             ISystemContext context = _nodeManager.SystemContext;
 
+            // COMMENT: Here we can create different alarms
             AlarmConditionState node = new TripAlarmState(this);
 
             node.SymbolicName = alarm.Name;
