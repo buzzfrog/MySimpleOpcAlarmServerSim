@@ -13,7 +13,9 @@ namespace OpcAlarmServer.Configuration
 
     public enum AlarmObjectStates
     {
-        TripAlarmState,
-        ConditionState
+        TripAlarmType,
+        OffNormalAlarmType,
+        AlarmConditionType,
+        LimitAlarmType
     }
 }

@@ -93,11 +93,14 @@ namespace OpcAlarmServer.Model
             switch (alarm.AlarmType)
             {
                 // TODO: fix later, remove conditons
-                case AlarmObjectStates.ConditionState:
-                    node = new AlarmConditionState(this);
-                    break;
-                case AlarmObjectStates.TripAlarmState:
+                case AlarmObjectStates.TripAlarmType:
                     node = new TripAlarmState(this);
+                    break;
+                case AlarmObjectStates.LimitAlarmType:
+                    node = new LimitAlarmState(this);
+                    break;
+                case AlarmObjectStates.OffNormalAlarmType:
+                    node = new OffNormalAlarmState(this);
                     break;
                 default:
                     node = new AlarmConditionState(this);

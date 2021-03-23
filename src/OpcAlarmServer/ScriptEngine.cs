@@ -8,13 +8,14 @@ namespace OpcAlarmServer
 {
     class ScriptEngine
     {
-        public delegate void NextScriptStepAvailable(Step step);
+        public delegate void NextScriptStepAvailable(Step step, long numberOfLoops);
         public NextScriptStepAvailable OnNextScriptStepAvailable;
 
         private LinkedList<Step> _steps;
         private LinkedListNode<Step> _currentStep;
         private Timer _stepsTimer;
         private Script _script;
+        private long _numberOfLoops = 1;
 
         public ScriptEngine(Script script, NextScriptStepAvailable scripCallback)
         {
@@ -42,7 +43,7 @@ namespace OpcAlarmServer
         private void ActivateCurrentStep(LinkedListNode<Step> step)
         {
             _currentStep = step;
-            OnNextScriptStepAvailable!.Invoke(step.Value);
+            OnNextScriptStepAvailable!.Invoke(step.Value, _numberOfLoops);
            _stepsTimer.Interval = 1 + step.Value.SleepInSeconds * 1000;
         }
 
@@ -52,8 +53,18 @@ namespace OpcAlarmServer
             {
                 return _steps.First;
             }
-
-            return step!.Next ?? _steps.First;
+            else
+            {
+                if(step!.Next != null)
+                {
+                    return step!.Next;
+                }
+                else
+                {
+                    _numberOfLoops++;
+                    return _steps.First;
+                }
+            }
         }
 
         private void OnStepTimedEvent(Object source, ElapsedEventArgs e)

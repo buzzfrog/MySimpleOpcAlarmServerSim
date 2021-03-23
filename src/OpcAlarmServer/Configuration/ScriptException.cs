@@ -4,9 +4,8 @@ using System.Text;
 
 namespace OpcAlarmServer.Configuration
 {
-    public enum ConditionStates
+    class ScriptException : Exception
     {
-        Enabled,
-        Activated
+        public ScriptException(string? message) : base(message) { }
     }
 }

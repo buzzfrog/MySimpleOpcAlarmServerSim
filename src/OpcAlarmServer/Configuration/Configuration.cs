@@ -14,12 +14,12 @@ namespace OpcAlarmServer.Configuration
 
         public string ToJson()
         {
-            return JsonSerializer.Serialize(this, new JsonSerializerOptions 
-                { 
-                    WriteIndented = true,
-                    IgnoreNullValues = true,
-                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                    Converters = {
+            return JsonSerializer.Serialize(this, new JsonSerializerOptions
+            {
+                WriteIndented = true,
+                IgnoreNullValues = true,
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                Converters = {
                         new JsonStringEnumConverter()
                     }
             });
@@ -28,10 +28,10 @@ namespace OpcAlarmServer.Configuration
         public static Configuration FromJson(string json)
         {
             return JsonSerializer.Deserialize<Configuration>(json, new JsonSerializerOptions
-                {
-                    IgnoreNullValues = false,
-                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                    Converters = {
+            {
+                IgnoreNullValues = false,
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                Converters = {
                     new JsonStringEnumConverter()
                     }
             });
@@ -55,15 +55,15 @@ namespace OpcAlarmServer.Configuration
                                 {
                                     new Alarm
                                     {
-                                        ObjectType = AlarmObjectStates.TripAlarmState,
+                                        ObjectType = AlarmObjectStates.TripAlarmType,
                                         Name = "VendingMachine1_DoorOpen",
-                                        Id = "A1"
+                                        Id = "V1_DoorOpen"
                                     },
                                     new Alarm
                                     {
-                                        ObjectType = AlarmObjectStates.ConditionState,
-                                        Name = "VendingMachine1_Operational",
-                                        Id = "C1"
+                                        ObjectType = AlarmObjectStates.LimitAlarmType,
+                                        Name = "VendingMachine1_TemperatureHigh",
+                                        Id = "V1_TemperatureHigh"
                                     }
                                 }
                             },
@@ -75,15 +75,15 @@ namespace OpcAlarmServer.Configuration
                                 {
                                     new Alarm
                                     {
-                                        ObjectType = AlarmObjectStates.TripAlarmState,
-                                        Name = "VendingMachine1_DoorOpen",
-                                        Id = "A2"
+                                        ObjectType = AlarmObjectStates.TripAlarmType,
+                                        Name = "VendingMachine2_DoorOpen",
+                                        Id = "V2_DoorOpen"
                                     },
                                     new Alarm
                                     {
-                                        ObjectType = AlarmObjectStates.ConditionState,
-                                        Name = "VendingMachine1_Operational",
-                                        Id = "C2"
+                                        ObjectType = AlarmObjectStates.OffNormalAlarmType,
+                                        Name = "VendingMachine2_LightOff",
+                                        Id = "V2_LightOff"
                                     }
                                 }
                             }
@@ -92,7 +92,7 @@ namespace OpcAlarmServer.Configuration
                 },
                 Script = new Script
                 {
-                    WaitUntilStartInSeconds = 5,
+                    WaitUntilStartInSeconds = 15,
                     StepsInLoop = true,
                     RunningForSecounds = 6000,
                     Steps = new List<Step>
@@ -101,10 +101,10 @@ namespace OpcAlarmServer.Configuration
                         {
                             Event = new Event
                             {
-                                AlarmId = "A1",
-                                Reason = "Alarm Enabled",
-                                Severity = EventSeverity.MediumHigh,
-                                EventId = "A1-0001",
+                                AlarmId = "V1_DoorOpen",
+                                Reason = "Door Open",
+                                Severity = EventSeverity.High,
+                                EventId = "V1_DoorOpen-1",
                                 StateChanges = new List<StateChange>
                                 {
                                     new StateChange
@@ -122,39 +122,26 @@ namespace OpcAlarmServer.Configuration
                         },
                         new Step
                         {
-                            SleepInSeconds = 10
+                            SleepInSeconds = 20
                         },
                         new Step
                         {
                             Event = new Event
                             {
-                                AlarmId = "C1",
-                                Reason = "Condition Enabled",
+                                AlarmId = "V2_LightOff",
+                                Reason = "Light Off in machine",
                                 Severity = EventSeverity.Medium,
-                                EventId = "C1-0001",
+                                EventId = "V2_LightOff-1",
                                 StateChanges = new List<StateChange>
                                 {
                                     new StateChange
                                     {
                                         StateType = ConditionStates.Enabled,
                                         State = true
-                                    }
-                                }
-                            }
-                        },
-                        new Step
-                        {
-                            Event = new Event
-                            {
-                                AlarmId = "A1",
-                                Reason = "Alarm Acknowledged",
-                                Severity = EventSeverity.Medium,
-                                EventId = "A1-0002",
-                                StateChanges = new List<StateChange>
-                                {
+                                    },
                                     new StateChange
                                     {
-                                        StateType = ConditionStates.Acknowledged,
+                                        StateType = ConditionStates.Activated,
                                         State = true
                                     }
                                 }
@@ -162,21 +149,43 @@ namespace OpcAlarmServer.Configuration
                         },
                         new Step
                         {
-                            SleepInSeconds = 100
+                            SleepInSeconds = 30
                         },
                         new Step
                         {
                             Event = new Event
                             {
-                                AlarmId = "A1",
-                                Reason = "Alarm Disabled",
+                                AlarmId = "V1_DoorOpen",
+                                Reason = "Door Closed",
+                                Severity = EventSeverity.Medium,
+                                EventId = "V1_DoorOpen-2",
+                                StateChanges = new List<StateChange>
+                                {
+                                    new StateChange
+                                    {
+                                        StateType = ConditionStates.Activated,
+                                        State = false
+                                    }
+                                }
+                            }
+                        },
+                        new Step
+                        {
+                            SleepInSeconds = 20
+                        },
+                        new Step
+                        {
+                            Event = new Event
+                            {
+                                AlarmId = "V2_LightOff",
+                                Reason = "Light is on",
                                 Severity = EventSeverity.Low,
-                                EventId = "A1-0003",
+                                EventId = "V2_LightOff-2",
                                 StateChanges = new List<StateChange>
                                 {
                                     new StateChange
                                     {
-                                        StateType = ConditionStates.Enabled,
+                                        StateType = ConditionStates.Activated,
                                         State = false
                                     }
                                 }

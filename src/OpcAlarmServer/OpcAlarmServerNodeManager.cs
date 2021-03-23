@@ -26,6 +26,7 @@ namespace OpcAlarmServer
         private Dictionary<string, SimSourceNodeState> _sourceNodes = new Dictionary<string, SimSourceNodeState>();
         private Configuration.Configuration _scriptconfiguration = Configuration.Configuration.Create();
         private ScriptEngine _scriptEngine;
+        private Dictionary<string, string> _scriptAlarmToSources;
 
         /// <summary>
         /// Initializes the node manager.
@@ -60,30 +61,102 @@ namespace OpcAlarmServer
             {
                 _configuration = new OpcAlarmServerConfiguration();
             }
-
-
         }
 
-        internal void ReplayScriptStart(Configuration.Configuration scriptConfiguration)
+        // TODO: Make better
+        private void VerifyScriptConfiguration(Configuration.Configuration scriptConfiguration)
         {
-            _scriptEngine = new ScriptEngine(scriptConfiguration.Script, OnScriptStepAvailable);
+            // TODO: verify if AlarmId in script part does exist.
+            _scriptAlarmToSources = new Dictionary<string, string>();
+            foreach (var folder in scriptConfiguration.Folders)
+            {
+                foreach (var source in folder.Sources)
+                {
+                    foreach (var alarm in source.Alarms)
+                    {
+                        if(_scriptAlarmToSources.ContainsKey(alarm.Id))
+                        {
+                            throw new ScriptException($"AlarmId: {alarm.Id} already exist");
+                        }
+                        else
+                        {
+                            _scriptAlarmToSources[alarm.Id] = source.Name;
+                        }
+                    }
+                }
+            }
 
-            //var a = _system.SourceNodes["VendingMachine1"].Alarms["A1"];
-            //a.SetStateBits(SimConditionStatesEnum.Enabled | SimConditionStatesEnum.Active, true);
-            //a.SetStateBits(SimConditionStatesEnum.Acknowledged | SimConditionStatesEnum.Confirmed, false);
-            //a.Severity = EventSeverity.Low;
-            //a.ActiveTime = DateTime.UtcNow;
-
-            //a.Time = DateTime.UtcNow;
-            //a.Reason = $"Activated {DateTime.UtcNow.Ticks}";
-            //_sourceNodes["VendingMachine1"].UpdateAlarmInSource(a, "A1-0001");
+            var uniqueEventIds = new Dictionary<string, string>();
+            foreach (var step in scriptConfiguration.Script.Steps)
+            {
+                if(step.Event != null)
+                {
+                    if(uniqueEventIds.ContainsKey(step.Event.EventId))
+                    {
+                        throw new ScriptException($"EventId: {step.Event.EventId} already exist");
+                    }
+                    else
+                    {
+                        uniqueEventIds[step.Event.EventId] = step.Event.AlarmId;
+                    }
+                }
+            }
         }
 
-        private void OnScriptStepAvailable(Step step)
+        private void ReplayScriptStart(Configuration.Configuration scriptConfiguration)
+        {     
+            VerifyScriptConfiguration(scriptConfiguration);
+            Console.WriteLine("Script starts executing");
+            _scriptEngine = new ScriptEngine(scriptConfiguration.Script, OnScriptStepAvailable);  
+        }
+
+        private void OnScriptStepAvailable(Step step, long loopNumber)
         {
             if (step.Event != null)
             {
-                Console.WriteLine($"{DateTime.UtcNow} - \t{step.Event.AlarmId}\t{step.Event.Reason}");
+                var alarm = GetAlarm(step);
+                UpdateAlarm(alarm, step.Event);
+                var sourceNodeId = _scriptAlarmToSources[step.Event.AlarmId];
+                _sourceNodes[sourceNodeId].UpdateAlarmInSource(alarm, step.Event.AlarmId + $"({loopNumber})");
+            }
+
+            PrintScriptStep(step, loopNumber);
+        }
+
+        private void UpdateAlarm(SimAlarmStateBackend alarm, Event scriptEvent)
+        {
+            alarm.Reason = scriptEvent.Reason;
+            alarm.Severity = scriptEvent.Severity;
+
+            foreach (var stateChange in scriptEvent.StateChanges)
+            {
+                switch (stateChange.StateType)
+                {
+                    case ConditionStates.Enabled:
+                        alarm.SetStateBits(SimConditionStatesEnum.Enabled, stateChange.State);
+                        alarm.EnableTime = DateTime.UtcNow;
+                        break;
+                    case ConditionStates.Activated:
+                        alarm.SetStateBits(SimConditionStatesEnum.Active, stateChange.State);
+                        alarm.ActiveTime = DateTime.UtcNow;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        private SimAlarmStateBackend GetAlarm(Step step)
+        {
+            var sourceNodeId = _scriptAlarmToSources[step.Event.AlarmId];
+            return _system.SourceNodes[sourceNodeId].Alarms[step.Event.AlarmId];
+        }
+
+        private void PrintScriptStep(Step step, long loopNumber)
+        {
+            if (step.Event != null)
+            {
+                Console.WriteLine($"{DateTime.UtcNow.ToLongTimeString()} ({loopNumber}) - \t{step.Event.AlarmId}\t{step.Event.Reason}");
                 foreach (var sc in step.Event.StateChanges)
                 {
                     Console.WriteLine($"\t\t{sc.StateType} - {sc.State}");
@@ -91,7 +164,7 @@ namespace OpcAlarmServer
             }
             if (step.SleepInSeconds > 0)
             {
-                Console.WriteLine($"{DateTime.UtcNow} - Sleep: {step.SleepInSeconds}");
+                Console.WriteLine($"{DateTime.UtcNow.ToLongTimeString()} ({loopNumber}) - Sleep: {step.SleepInSeconds}");
             }
         }
 
