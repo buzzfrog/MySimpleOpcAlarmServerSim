@@ -63,7 +63,6 @@ namespace OpcAlarmServer.Model
                 instanceStateSnapshotNewAlarm.Handle = this;
                 events.Add(instanceStateSnapshotNewAlarm);
             }
-
         }
 
         // COMMENT: Here is the "real" OPC Alarms created and updated.

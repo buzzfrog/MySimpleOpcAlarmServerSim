@@ -1,36 +1,39 @@
 ﻿using Opc.Ua;
 using Opc.Ua.Server;
 using OpcAlarmServer.Model;
+using OpcAlarmServer.SimBackend;
 using OpcAlarmServer.VendingMachineBackendService;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using System.Threading;
+using OpcAlarmServer.Configuration;
 
 namespace OpcAlarmServer
 {
-    class OpcAlarmServerNodeManager : CustomNodeManager2
+    public class OpcAlarmServerNodeManager : CustomNodeManager2
     {
         private OpcAlarmServerConfiguration _configuration;
         private Timer _eventsSimulationTimer;
-        private VendingMachineBackendSystem _system;
-        private VendingMachinesFolder _vendingMachinesFolder;
+        private SimBackendService _system;
+        private List<SimFolderState> _folders = new List<SimFolderState>();
         private uint _nodeIdCounter = 0;
         private List<NodeState> _rootNotifiers;
         private IServerInternal _server;
         private ServerSystemContext _defaultSystemContext;
-        private Dictionary<string, VendingMachineState> _vendingMachines = new Dictionary<string, VendingMachineState>();
+        private Dictionary<string, SimSourceNodeState> _sourceNodes = new Dictionary<string, SimSourceNodeState>();
+        private Configuration.Configuration _scriptconfiguration = Configuration.Configuration.Create();
 
         /// <summary>
         /// Initializes the node manager.
         /// </summary>
-        public OpcAlarmServerNodeManager(IServerInternal server, ApplicationConfiguration configuration) : base(server, configuration) 
+        public OpcAlarmServerNodeManager(IServerInternal server, ApplicationConfiguration configuration) : base(server, configuration)
         {
             _server = server;
             _defaultSystemContext = _server.DefaultSystemContext.Copy();
             SystemContext.NodeIdFactory = this;
-            SystemContext.SystemHandle = _system = new VendingMachineBackendSystem();
+            SystemContext.SystemHandle = _system = new SimBackendService();
 
             // set one namespace for the type model and one names for dynamically created nodes.
             string[] namespaceUrls = new string[1];
@@ -40,11 +43,36 @@ namespace OpcAlarmServer
             // get the configuration for the node manager.
             _configuration = configuration.ParseExtension<OpcAlarmServerConfiguration>();
 
+            try
+            {
+                var cf = OpcAlarmServer.Configuration.Configuration.Create().ToJson();
+            }
+            catch (Exception e)
+            {
+
+                throw;
+            }
+
             // use suitable defaults if no configuration exists.
             if (_configuration == null)
             {
                 _configuration = new OpcAlarmServerConfiguration();
             }
+
+
+        }
+
+        internal void ReplayScriptStart(Configuration.Configuration scriptConfiguration)
+        {
+            var a = _system.SourceNodes["VendingMachine1"].Alarms["A1"];
+            a.SetStateBits(SimConditionStatesEnum.Enabled | SimConditionStatesEnum.Active, true);
+            a.SetStateBits(SimConditionStatesEnum.Acknowledged | SimConditionStatesEnum.Confirmed, false);
+            a.Severity = EventSeverity.Low;
+            a.ActiveTime = DateTime.UtcNow;
+
+            a.Time = DateTime.UtcNow;
+            a.Reason = $"Activated {DateTime.UtcNow.Ticks}";
+            _sourceNodes["VendingMachine1"].UpdateAlarmInSource(a, "A1-0001");
         }
 
         #region CustomNodeManager2 overrides
@@ -310,33 +338,62 @@ namespace OpcAlarmServer
                     externalReferences[ObjectIds.Server] = references = new List<IReference>();
                 }
 
-                
-                // create root for vending machines
-                _vendingMachinesFolder = new VendingMachinesFolder(SystemContext, null, new NodeId("vendingmachinefolder", NamespaceIndex), "VendingMachines");
-
-                _vendingMachinesFolder.AddReference(ReferenceTypeIds.HasNotifier, true, ObjectIds.Server);
-                AddRootNotifier(_vendingMachinesFolder);
-
-                // create a number of vendingmachines
-                for (int postNameNumber = 0; postNameNumber < 100; postNameNumber++)
+                foreach (var folder in _scriptconfiguration.Folders)
                 {
-                    VendingMachineState vendingMachine;
+                    // Folder Node
+                    var simFolderState = new SimFolderState(SystemContext, null, new NodeId(folder.Name, NamespaceIndex), folder.Name);
+                    simFolderState.AddReference(ReferenceTypeIds.HasNotifier, true, ObjectIds.Server);
+                    AddRootNotifier(simFolderState);
+                    _folders.Add(simFolderState);
 
-                    var name = $"vending_machine_{postNameNumber}";
-                    _vendingMachines[name] = vendingMachine = 
-                        new VendingMachineState(this, new NodeId(name, NamespaceIndex), name);
+                    // Source Nodes
+                    foreach (var source in folder.Sources)
+                    {
+                        SimSourceNodeState simSourceNodeState;
+                        _sourceNodes[source.Name] = simSourceNodeState = 
+                            new SimSourceNodeState(this, new NodeId(source.Name, NamespaceIndex), source.Name, source.Alarms);
 
-                   _vendingMachinesFolder.AddChild(vendingMachine);
+                        simFolderState.AddChild(simSourceNodeState);
 
-                    vendingMachine.AddNotifier(SystemContext, ReferenceTypeIds.HasEventSource, true, _vendingMachinesFolder);
-                    _vendingMachinesFolder.AddNotifier(SystemContext, ReferenceTypeIds.HasEventSource, false, vendingMachine);
+                        simSourceNodeState.AddNotifier(SystemContext, ReferenceTypeIds.HasEventSource, true, simFolderState);
+                        simFolderState.AddNotifier(SystemContext, ReferenceTypeIds.HasEventSource, false, simSourceNodeState);
+                    }
+
+                    references.Add(new NodeStateReference(ReferenceTypeIds.HasNotifier, false, simFolderState.NodeId));
+                    
+                    AddPredefinedNode(SystemContext, simFolderState);
                 }
 
-                references.Add(new NodeStateReference(ReferenceTypeIds.HasNotifier, false, _vendingMachinesFolder.NodeId));
+
+
+
+                //// create root for vending machines
+                //_vendingMachinesFolder = new VendingMachinesFolder(SystemContext, null, new NodeId("vendingmachinefolder", NamespaceIndex), "VendingMachines");
+
+                //_vendingMachinesFolder.AddReference(ReferenceTypeIds.HasNotifier, true, ObjectIds.Server);
+                //AddRootNotifier(_vendingMachinesFolder);
+
+                //// create a number of vendingmachines
+                //for (int postNameNumber = 0; postNameNumber < 100; postNameNumber++)
+                //{
+                //    VendingMachineState vendingMachine;
+
+                //    var name = $"vending_machine_{postNameNumber}";
+                //    _vendingMachines[name] = vendingMachine =
+                //        new VendingMachineState(this, new NodeId(name, NamespaceIndex), name);
+
+                //    _vendingMachinesFolder.AddChild(vendingMachine);
+
+                //    vendingMachine.AddNotifier(SystemContext, ReferenceTypeIds.HasEventSource, true, _vendingMachinesFolder);
+                //    _vendingMachinesFolder.AddNotifier(SystemContext, ReferenceTypeIds.HasEventSource, false, vendingMachine);
+                //}
+
+                //references.Add(new NodeStateReference(ReferenceTypeIds.HasNotifier, false, _vendingMachinesFolder.NodeId));
             }
 
-            AddPredefinedNode(SystemContext, _vendingMachinesFolder);
-            _system.StartSimulation();
+            ReplayScriptStart(_scriptconfiguration);
+
+            //_system.StartSimulation();
             //_eventsSimulationTimer = new Timer(OnRaiseSystemEvents, null, 1000, 1000);
         }
 
@@ -355,7 +412,7 @@ namespace OpcAlarmServer
 
             foreach (MonitoredItem monitoredItem in monitoredItems)
             {
-                if(monitoredItem == null)
+                if (monitoredItem == null)
                 {
                     continue;
                 }
@@ -363,7 +420,7 @@ namespace OpcAlarmServer
                 List<IFilterTarget> events = new List<IFilterTarget>();
                 List<NodeState> nodesToRefresh = new List<NodeState>();
 
-                lock(Lock)
+                lock (Lock)
                 {
                     // check for server subscription.
                     if (monitoredItem.NodeId == ObjectIds.Server)

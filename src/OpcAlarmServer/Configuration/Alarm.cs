@@ -1,5 +1,4 @@
-﻿using Opc.Ua;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -7,8 +6,14 @@ namespace OpcAlarmServer.Configuration
 {
     public class Alarm
     {
-        public Type Type { get; set; }
+        public AlarmObjectStates ObjectType { get; set; }
         public string Name { get; set; }
         public string Id { get; set; }
+    }
+
+    public enum AlarmObjectStates
+    {
+        TripAlarmState,
+        ConditionState
     }
 }

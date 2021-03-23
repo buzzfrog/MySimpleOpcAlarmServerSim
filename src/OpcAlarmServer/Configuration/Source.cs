@@ -7,8 +7,13 @@ namespace OpcAlarmServer.Configuration
 {
     public class Source
     {
-        public Type Type { get; set; }
+        public SourceObjectState ObjectType { get; set; }
         public string Name { get; set; }
         public List<Alarm> Alarms { get; set; }
+    }
+
+    public enum SourceObjectState
+    {
+        BaseObjectState
     }
 }
