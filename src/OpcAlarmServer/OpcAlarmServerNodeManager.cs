@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using OpcAlarmServer.Configuration;
+using System.Linq;
 
 namespace OpcAlarmServer
 {
@@ -24,6 +25,7 @@ namespace OpcAlarmServer
         private ServerSystemContext _defaultSystemContext;
         private Dictionary<string, SimSourceNodeState> _sourceNodes = new Dictionary<string, SimSourceNodeState>();
         private Configuration.Configuration _scriptconfiguration = Configuration.Configuration.Create();
+        private ScriptEngine _scriptEngine;
 
         /// <summary>
         /// Initializes the node manager.
@@ -64,15 +66,33 @@ namespace OpcAlarmServer
 
         internal void ReplayScriptStart(Configuration.Configuration scriptConfiguration)
         {
-            var a = _system.SourceNodes["VendingMachine1"].Alarms["A1"];
-            a.SetStateBits(SimConditionStatesEnum.Enabled | SimConditionStatesEnum.Active, true);
-            a.SetStateBits(SimConditionStatesEnum.Acknowledged | SimConditionStatesEnum.Confirmed, false);
-            a.Severity = EventSeverity.Low;
-            a.ActiveTime = DateTime.UtcNow;
+            _scriptEngine = new ScriptEngine(scriptConfiguration.Script, OnScriptStepAvailable);
 
-            a.Time = DateTime.UtcNow;
-            a.Reason = $"Activated {DateTime.UtcNow.Ticks}";
-            _sourceNodes["VendingMachine1"].UpdateAlarmInSource(a, "A1-0001");
+            //var a = _system.SourceNodes["VendingMachine1"].Alarms["A1"];
+            //a.SetStateBits(SimConditionStatesEnum.Enabled | SimConditionStatesEnum.Active, true);
+            //a.SetStateBits(SimConditionStatesEnum.Acknowledged | SimConditionStatesEnum.Confirmed, false);
+            //a.Severity = EventSeverity.Low;
+            //a.ActiveTime = DateTime.UtcNow;
+
+            //a.Time = DateTime.UtcNow;
+            //a.Reason = $"Activated {DateTime.UtcNow.Ticks}";
+            //_sourceNodes["VendingMachine1"].UpdateAlarmInSource(a, "A1-0001");
+        }
+
+        private void OnScriptStepAvailable(Step step)
+        {
+            if (step.Event != null)
+            {
+                Console.WriteLine($"{DateTime.UtcNow} - \t{step.Event.AlarmId}\t{step.Event.Reason}");
+                foreach (var sc in step.Event.StateChanges)
+                {
+                    Console.WriteLine($"\t\t{sc.StateType} - {sc.State}");
+                }
+            }
+            if (step.SleepInSeconds > 0)
+            {
+                Console.WriteLine($"{DateTime.UtcNow} - Sleep: {step.SleepInSeconds}");
+            }
         }
 
         #region CustomNodeManager2 overrides

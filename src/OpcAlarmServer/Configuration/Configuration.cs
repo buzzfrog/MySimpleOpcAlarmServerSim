@@ -92,7 +92,7 @@ namespace OpcAlarmServer.Configuration
                 },
                 Script = new Script
                 {
-                    WaitUntilStartInSeconds = 30,
+                    WaitUntilStartInSeconds = 5,
                     StepsInLoop = true,
                     RunningForSecounds = 6000,
                     Steps = new List<Step>
