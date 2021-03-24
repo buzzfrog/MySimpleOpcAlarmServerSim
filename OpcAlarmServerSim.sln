@@ -5,7 +5,10 @@ VisualStudioVersion = 16.0.31019.194
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpcAlarmServer", "src\OpcAlarmServer\OpcAlarmServer.csproj", "{35009465-BB58-496A-8298-E5739B954C15}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestOpcAlarmServer", "TestOpcAlarmServer\TestOpcAlarmServer.csproj", "{22DB5730-9BCA-4625-BD69-4404A7A36C5B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{861069B4-248E-4917-A2AA-90F184B15424}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +20,6 @@ Global
 		{35009465-BB58-496A-8298-E5739B954C15}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{35009465-BB58-496A-8298-E5739B954C15}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{35009465-BB58-496A-8298-E5739B954C15}.Release|Any CPU.Build.0 = Release|Any CPU
-		{22DB5730-9BCA-4625-BD69-4404A7A36C5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{22DB5730-9BCA-4625-BD69-4404A7A36C5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{22DB5730-9BCA-4625-BD69-4404A7A36C5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{22DB5730-9BCA-4625-BD69-4404A7A36C5B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
