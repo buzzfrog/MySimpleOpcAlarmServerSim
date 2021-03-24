@@ -2,7 +2,6 @@
 using Opc.Ua.Server;
 using OpcAlarmServer.Model;
 using OpcAlarmServer.SimBackend;
-using OpcAlarmServer.VendingMachineBackendService;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
