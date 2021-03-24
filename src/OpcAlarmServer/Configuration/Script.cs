@@ -6,8 +6,7 @@ namespace OpcAlarmServer.Configuration
     {
         public int WaitUntilStartInSeconds { get; set; }
         public bool StepsInLoop { get; set; }
-        public int RunningForSecounds { get; set; }
+        public int RunningForSeconds { get; set; }
         public List<Step> Steps { get; set; }
-
     }
 }
