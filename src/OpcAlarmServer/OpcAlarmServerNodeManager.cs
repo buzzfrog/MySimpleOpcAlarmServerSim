@@ -10,13 +10,13 @@ using System.Text;
 using System.Threading;
 using OpcAlarmServer.Configuration;
 using System.Linq;
+using System.IO;
 
 namespace OpcAlarmServer
 {
     public class OpcAlarmServerNodeManager : CustomNodeManager2
     {
         private OpcAlarmServerConfiguration _configuration;
-        private Timer _eventsSimulationTimer;
         private SimBackendService _system;
         private List<SimFolderState> _folders = new List<SimFolderState>();
         private uint _nodeIdCounter = 0;
@@ -24,7 +24,7 @@ namespace OpcAlarmServer
         private IServerInternal _server;
         private ServerSystemContext _defaultSystemContext;
         private Dictionary<string, SimSourceNodeState> _sourceNodes = new Dictionary<string, SimSourceNodeState>();
-        private Configuration.Configuration _scriptconfiguration = Configuration.Configuration.Create();
+        private Configuration.Configuration _scriptconfiguration;
         private ScriptEngine _scriptEngine;
         private Dictionary<string, string> _scriptAlarmToSources;
 
@@ -46,27 +46,20 @@ namespace OpcAlarmServer
             // get the configuration for the node manager.
             _configuration = configuration.ParseExtension<OpcAlarmServerConfiguration>();
 
-            try
-            {
-                var cf = OpcAlarmServer.Configuration.Configuration.Create().ToJson();
-            }
-            catch (Exception e)
-            {
-
-                throw;
-            }
-
             // use suitable defaults if no configuration exists.
             if (_configuration == null)
             {
                 _configuration = new OpcAlarmServerConfiguration();
             }
+
+            // read script configuration file
+            var jsonstring = File.ReadAllText("ScriptConfiguration.json");
+            _scriptconfiguration = Configuration.Configuration.FromJson(jsonstring);
         }
 
         // TODO: Make better
         private void VerifyScriptConfiguration(Configuration.Configuration scriptConfiguration)
         {
-            // TODO: verify if AlarmId in script part does exist.
             _scriptAlarmToSources = new Dictionary<string, string>();
             foreach (var folder in scriptConfiguration.Folders)
             {
@@ -98,6 +91,10 @@ namespace OpcAlarmServer
                     else
                     {
                         uniqueEventIds[step.Event.EventId] = step.Event.AlarmId;
+                    }
+                    if(!_scriptAlarmToSources.ContainsKey(step.Event.AlarmId))
+                    {
+                        throw new ScriptException($"AlarmId: {step.Event.AlarmId} is not defined");
                     }
                 }
             }
@@ -156,7 +153,7 @@ namespace OpcAlarmServer
         {
             if (step.Event != null)
             {
-                Console.WriteLine($"{DateTime.UtcNow.ToLongTimeString()} ({loopNumber}) - \t{step.Event.AlarmId}\t{step.Event.Reason}");
+                Console.WriteLine($"{DateTime.UtcNow.ToLongTimeString()} ({loopNumber}) -\t{step.Event.AlarmId}\t{step.Event.Reason}");
                 foreach (var sc in step.Event.StateChanges)
                 {
                     Console.WriteLine($"\t\t{sc.StateType} - {sc.State}");
@@ -164,7 +161,7 @@ namespace OpcAlarmServer
             }
             if (step.SleepInSeconds > 0)
             {
-                Console.WriteLine($"{DateTime.UtcNow.ToLongTimeString()} ({loopNumber}) - Sleep: {step.SleepInSeconds}");
+                Console.WriteLine($"{DateTime.UtcNow.ToLongTimeString()} ({loopNumber}) -\tSleep: {step.SleepInSeconds}");
             }
         }
 
