@@ -40,7 +40,7 @@ The script have two sections.
   "script": {
     "waitUntilStartInSeconds": 10,
     "stepsInLoop": true,
-    "runningForSecounds": 6000,
+    "runningForSeconds": 6000,
     "steps": [
       {
         "event": {
