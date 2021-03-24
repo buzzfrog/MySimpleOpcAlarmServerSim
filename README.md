@@ -10,7 +10,7 @@ This prototype is the first solution to that.
 A replay script is created in json and is executed to simulate alarm states.
 
 ## Script
-The script have to sections.
+The script have two sections.
 * Definition of the Folders, Sources of alarms, and the Alarms themselves.
 * The replay steps 
 (You can find a real example in [ScriptConfiguration.json](src/OpcAlarmServer/ScriptConfiguration.json))
