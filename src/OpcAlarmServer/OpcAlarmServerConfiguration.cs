@@ -1,12 +1,11 @@
-﻿using buzzfrog.OpcAlarmServer;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
 
 namespace OpcAlarmServer
 {
-    [DataContract(Namespace = Namespaces.OpcAlarmServer)]
+    [DataContract(Namespace = Namespaces.VendingMachines)]
     class OpcAlarmServerConfiguration
     {
         public OpcAlarmServerConfiguration()
