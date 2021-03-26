@@ -422,69 +422,53 @@ namespace OpcAlarmServer
             {
                 IList<IReference> references = null;
 
-                if (!externalReferences.TryGetValue(ObjectIds.Server, out references))
+                if (!externalReferences.TryGetValue(ObjectIds.ObjectsFolder, out references))
                 {
-                    externalReferences[ObjectIds.Server] = references = new List<IReference>();
+                    externalReferences[ObjectIds.ObjectsFolder] = references = new List<IReference>();
                 }
 
-                foreach (var folder in _scriptconfiguration.Folders)
-                {
-                    // Folder Node
-                    var simFolderState = new SimFolderState(SystemContext, null, new NodeId(folder.Name, NamespaceIndex), folder.Name);
-                    simFolderState.AddReference(ReferenceTypeIds.HasNotifier, true, ObjectIds.Server);
-                    AddRootNotifier(simFolderState);
-                    _folders.Add(simFolderState);
+                ImportXml(externalReferences, "xml/vendingmachines.xml");
+            }
+        }
 
-                    // Source Nodes
-                    foreach (var source in folder.Sources)
-                    {
-                        SimSourceNodeState simSourceNodeState;
-                        _sourceNodes[source.Name] = simSourceNodeState = 
-                            new SimSourceNodeState(this, new NodeId(source.Name, NamespaceIndex), source.Name, source.Alarms);
+        private void ImportXml(IDictionary<NodeId, IList<IReference>> externalReferences, string resourcepath)
+        {
+            NodeStateCollection predefinedNodes = new NodeStateCollection();
 
-                        simFolderState.AddChild(simSourceNodeState);
+            Stream stream = new FileStream(resourcepath, FileMode.Open);
+            Opc.Ua.Export.UANodeSet nodeSet = Opc.Ua.Export.UANodeSet.Read(stream);
 
-                        simSourceNodeState.AddNotifier(SystemContext, ReferenceTypeIds.HasEventSource, true, simFolderState);
-                        simFolderState.AddNotifier(SystemContext, ReferenceTypeIds.HasEventSource, false, simSourceNodeState);
-                    }
+            SystemContext.NamespaceUris.Append(nodeSet.NamespaceUris.ToString());
+            nodeSet.Import(SystemContext, predefinedNodes);
 
-                    references.Add(new NodeStateReference(ReferenceTypeIds.HasNotifier, false, simFolderState.NodeId));
-                    
-                    AddPredefinedNode(SystemContext, simFolderState);
-                }
+            for (int ii = 0; ii < predefinedNodes.Count; ii++)
+            {
+                AddPredefinedNode(SystemContext, predefinedNodes[ii]);
+            }
+            // ensure the reverse refernces exist.
+            AddReverseReferences(externalReferences);
+        }
 
+        // DO WE NEED THIS METHOD?
+        protected override NodeState AddBehaviourToPredefinedNode(ISystemContext context, NodeState predefinedNode)
+        {
+            BaseObjectState passiveNode = predefinedNode as BaseObjectState;
 
-
-
-                //// create root for vending machines
-                //_vendingMachinesFolder = new VendingMachinesFolder(SystemContext, null, new NodeId("vendingmachinefolder", NamespaceIndex), "VendingMachines");
-
-                //_vendingMachinesFolder.AddReference(ReferenceTypeIds.HasNotifier, true, ObjectIds.Server);
-                //AddRootNotifier(_vendingMachinesFolder);
-
-                //// create a number of vendingmachines
-                //for (int postNameNumber = 0; postNameNumber < 100; postNameNumber++)
-                //{
-                //    VendingMachineState vendingMachine;
-
-                //    var name = $"vending_machine_{postNameNumber}";
-                //    _vendingMachines[name] = vendingMachine =
-                //        new VendingMachineState(this, new NodeId(name, NamespaceIndex), name);
-
-                //    _vendingMachinesFolder.AddChild(vendingMachine);
-
-                //    vendingMachine.AddNotifier(SystemContext, ReferenceTypeIds.HasEventSource, true, _vendingMachinesFolder);
-                //    _vendingMachinesFolder.AddNotifier(SystemContext, ReferenceTypeIds.HasEventSource, false, vendingMachine);
-                //}
-
-                //references.Add(new NodeStateReference(ReferenceTypeIds.HasNotifier, false, _vendingMachinesFolder.NodeId));
+            if (passiveNode == null)
+            {
+                return predefinedNode;
             }
 
-            ReplayScriptStart(_scriptconfiguration);
+            NodeId typeId = passiveNode.TypeDefinitionId;
 
-            //_system.StartSimulation();
-            //_eventsSimulationTimer = new Timer(OnRaiseSystemEvents, null, 1000, 1000);
+            if (!IsNodeIdInNamespace(typeId) || typeId.IdType != IdType.Numeric)
+            {
+                return predefinedNode;
+            }
+            return predefinedNode;
         }
+
+
 
         /// <summary>
         /// Tells the node manager to refresh any conditions associated with the specified monitored items.
