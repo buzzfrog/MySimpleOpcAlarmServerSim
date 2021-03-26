@@ -6,10 +6,10 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
-using System.Threading;
 using OpcAlarmServer.Configuration;
 using System.Linq;
 using System.IO;
+using System.Timers;
 
 namespace OpcAlarmServer
 {
@@ -26,7 +26,7 @@ namespace OpcAlarmServer
         private Configuration.Configuration _scriptconfiguration;
         private ScriptEngine _scriptEngine;
         private Dictionary<string, string> _scriptAlarmToSources;
-
+        private Timer _simulationTimer = new Timer();
         /// <summary>
         /// Initializes the node manager.
         /// </summary>
@@ -56,6 +56,7 @@ namespace OpcAlarmServer
             _scriptconfiguration = Configuration.Configuration.FromJson(jsonstring);
         }
 
+        #region scriptengine
         // TODO: Make better
         private void VerifyScriptConfiguration(Configuration.Configuration scriptConfiguration)
         {
@@ -163,6 +164,7 @@ namespace OpcAlarmServer
                 Console.WriteLine($"{DateTime.UtcNow.ToLongTimeString()} ({loopNumber}) -\tSleep: {step.SleepInSeconds}");
             }
         }
+        #endregion
 
         #region CustomNodeManager2 overrides
         /// <summary>
@@ -427,7 +429,13 @@ namespace OpcAlarmServer
                     externalReferences[ObjectIds.ObjectsFolder] = references = new List<IReference>();
                 }
 
-                ImportXml(externalReferences, "xml/vendingmachines.xml");
+                ImportXml(externalReferences, "xml/SimpleEvents.NodeSet2.xml");
+
+                _simulationTimer = new Timer();
+                _simulationTimer.Elapsed += DoSimulation;
+                _simulationTimer.Interval = 1000;
+                _simulationTimer.AutoReset = false;
+                _simulationTimer.Start();
             }
         }
 
@@ -449,26 +457,61 @@ namespace OpcAlarmServer
             AddReverseReferences(externalReferences);
         }
 
-        // DO WE NEED THIS METHOD?
-        protected override NodeState AddBehaviourToPredefinedNode(ISystemContext context, NodeState predefinedNode)
+        private void DoSimulation(Object source, ElapsedEventArgs e)
         {
-            BaseObjectState passiveNode = predefinedNode as BaseObjectState;
-
-            if (passiveNode == null)
+            try
             {
-                return predefinedNode;
+
+                this.CreateNode()
+                var n = new NodeId(184, NamespaceIndex);
+                //var n = NodeId.Parse("i=184,ns=2");
+
+                var nd = Find(n);
+
+                var bi = new List<BaseInstanceState>();
+                List<IReference> rf = new List<IReference>();
+
+                nd.GetReferences(SystemContext, rf);
+                nd.GetChildren(_defaultSystemContext, bi);
+
+                Console.WriteLine(bi);
+                //for (int ii = 1; ii < 3; ii++)
+                //{
+                //    // construct translation object with default text.
+                //    TranslationInfo info = new TranslationInfo(
+                //        "SystemCycleStarted",
+                //        "en-US",
+                //        "The system cycle '{0}' has started.",
+                //        ++m_cycleId);
+
+                //    // construct the event.
+                //    SystemCycleStartedEventState e = new SystemCycleStartedEventState(null);
+
+                //    e.Initialize(
+                //        SystemContext,
+                //        null,
+                //        (EventSeverity)ii,
+                //        new LocalizedText(info));
+
+                //    e.SetChildValue(SystemContext, Opc.Ua.BrowseNames.SourceName, "System", false);
+                //    e.SetChildValue(SystemContext, Opc.Ua.BrowseNames.SourceNode, Opc.Ua.ObjectIds.Server, false);
+                //    e.SetChildValue(SystemContext, new QualifiedName(BrowseNames.CycleId, NamespaceIndex), m_cycleId.ToString(), false);
+
+                //    CycleStepDataType step = new CycleStepDataType();
+                //    step.Name = "Step 1";
+                //    step.Duration = 1000;
+
+                //    e.SetChildValue(SystemContext, new QualifiedName(BrowseNames.CurrentStep, NamespaceIndex), step, false);
+                //    e.SetChildValue(SystemContext, new QualifiedName(BrowseNames.Steps, NamespaceIndex), new CycleStepDataType[] { step, step }, false);
+
+                //    Server.ReportEvent(e);
+                //}
             }
-
-            NodeId typeId = passiveNode.TypeDefinitionId;
-
-            if (!IsNodeIdInNamespace(typeId) || typeId.IdType != IdType.Numeric)
+            catch (Exception ex)
             {
-                return predefinedNode;
+                Utils.Trace(ex, "Unexpected error during simulation.");
             }
-            return predefinedNode;
         }
-
-
 
         /// <summary>
         /// Tells the node manager to refresh any conditions associated with the specified monitored items.
