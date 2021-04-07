@@ -27,6 +27,7 @@ namespace OpcAlarmServer
         private ScriptEngine _scriptEngine;
         private Dictionary<string, string> _scriptAlarmToSources;
         private Timer _simulationTimer = new Timer();
+        private NodeStateCollection _predefinedNodes;
         /// <summary>
         /// Initializes the node manager.
         /// </summary>
@@ -50,6 +51,7 @@ namespace OpcAlarmServer
             {
                 _configuration = new OpcAlarmServerConfiguration();
             }
+            
 
             // read script configuration file
             var jsonstring = File.ReadAllText("ScriptConfiguration.json");
@@ -433,7 +435,7 @@ namespace OpcAlarmServer
 
                 _simulationTimer = new Timer();
                 _simulationTimer.Elapsed += DoSimulation;
-                _simulationTimer.Interval = 1000;
+                _simulationTimer.Interval = 5000;
                 _simulationTimer.AutoReset = false;
                 _simulationTimer.Start();
             }
@@ -441,40 +443,135 @@ namespace OpcAlarmServer
 
         private void ImportXml(IDictionary<NodeId, IList<IReference>> externalReferences, string resourcepath)
         {
-            NodeStateCollection predefinedNodes = new NodeStateCollection();
+            _predefinedNodes = new NodeStateCollection();
 
             Stream stream = new FileStream(resourcepath, FileMode.Open);
             Opc.Ua.Export.UANodeSet nodeSet = Opc.Ua.Export.UANodeSet.Read(stream);
 
             SystemContext.NamespaceUris.Append(nodeSet.NamespaceUris.ToString());
-            nodeSet.Import(SystemContext, predefinedNodes);
+            nodeSet.Import(SystemContext, _predefinedNodes);
 
-            for (int ii = 0; ii < predefinedNodes.Count; ii++)
+            for (int ii = 0; ii < _predefinedNodes.Count; ii++)
             {
-                AddPredefinedNode(SystemContext, predefinedNodes[ii]);
+                AddPredefinedNode(SystemContext, _predefinedNodes[ii]);
             }
             // ensure the reverse refernces exist.
             AddReverseReferences(externalReferences);
         }
 
+        /// <summary>
+        /// Replaces the generic node with a node specific to the model.
+        /// </summary>
+        protected override NodeState AddBehaviourToPredefinedNode(ISystemContext context, NodeState predefinedNode)
+        {
+            BaseObjectState passiveNode = predefinedNode as BaseObjectState;
+
+            if (passiveNode == null)
+            {
+                return predefinedNode;
+            }
+
+            NodeId typeId = passiveNode.TypeDefinitionId;
+
+            if (!IsNodeIdInNamespace(typeId) || typeId.IdType != IdType.Numeric)
+            {
+                return predefinedNode;
+            }
+            return predefinedNode;
+        }
+
         private void DoSimulation(Object source, ElapsedEventArgs e)
         {
+            // https://github.com/OPCFoundation/UA-.NETStandard/issues/1306
+            // https://github.com/OPCFoundation/UA-.NETStandard/issues/1303
+
             try
             {
+                TranslationInfo info = new TranslationInfo(
+                    "SystemCycleStarted",
+                    "en-US",
+                    "Hello");
 
-                this.CreateNode()
-                var n = new NodeId(184, NamespaceIndex);
-                //var n = NodeId.Parse("i=184,ns=2");
+                var n = new NodeId(235, NamespaceIndex);
+                
+                var nd = new SystemEventState(null);
 
-                var nd = Find(n);
+                var kd = _predefinedNodes.Find(n => n.BrowseName == new QualifiedName("SystemCycleStatusEventType", NamespaceIndex));
 
-                var bi = new List<BaseInstanceState>();
-                List<IReference> rf = new List<IReference>();
+                nd.Initialize(
+                       _defaultSystemContext,
+                       kd,
+                       EventSeverity.Medium,
+                       new LocalizedText(info));
 
-                nd.GetReferences(SystemContext, rf);
-                nd.GetChildren(_defaultSystemContext, bi);
+                nd.EventType = new PropertyState<NodeId>(nd);
+                nd.EventType.Value = n;
 
-                Console.WriteLine(bi);
+                nd.TypeDefinitionId = n;
+
+                //var ps = nd.AddProperty<string>("CycleId", DataTypeIds.String, 1);
+                
+                //ps.Value = "12";
+                //ps.Create(SystemContext, Find(n));
+                // var b = nd.CreateChild(SystemContext, new QualifiedName("CycleId", NamespaceIndex));
+                nd.SetChildValue(SystemContext, Opc.Ua.BrowseNames.SourceName, "System", false);
+                nd.SetChildValue(SystemContext, Opc.Ua.BrowseNames.SourceNode, Opc.Ua.ObjectIds.Server, false);
+                //nd.UpdateChangeMasks(NodeStateChangeMasks.Children | NodeStateChangeMasks.Value | NodeStateChangeMasks.References);
+                //if (!nd.SetChildValue(SystemContext, new QualifiedName("CycleId", NamespaceIndex), "12", false))
+                //{
+                //    Console.WriteLine($"Can't set value - {new QualifiedName("CycleId", NamespaceIndex)}");
+                //}
+
+                //var s = new StructureDefinition();
+                //s.Fields = new StructureFieldCollection
+                //{
+                //    new StructureField { Name = "Name", DataType = DataTypeIds.String },
+                //    new StructureField { Name = "Duration", DataType = DataTypeIds.Double}
+                //};
+
+
+                //nd.SetChildValue(SystemContext, new QualifiedName("Steps", NamespaceIndex), s, false);
+
+                //var cp = new ContinuationPoint() { 
+                //    BrowseDirection = BrowseDirection.Forward, 
+                //    ReferenceTypeId = ReferenceTypeIds.HasProperty,
+                //    NodeToBrowse = n
+                //};
+                //var rd = new List<ReferenceDescription>();
+                //this.Browse(_defaultSystemContext.OperationContext, ref cp, rd);
+
+                //var listOfAdditionalReferences = new List<ReferenceNode>
+                //{
+                //    new ReferenceNode { ReferenceTypeId = ReferenceTypeIds.HasComponent },
+                //    new ReferenceNode { ReferenceTypeId = ReferenceTypeIds.HasTypeDefinition}
+                //};
+
+                //var browser = Find(n).CreateBrowser(_defaultSystemContext, null, 
+                //    ReferenceTypeIds.HasProperty, 
+                //    true, 
+                //    BrowseDirection.Both, 
+                //    null,
+                //    null,
+                //    false);
+
+                //for (IReference reference = browser.Next(); reference != null; reference = browser.Next())
+                //{
+                //    // create the type definition reference.
+                //    Console.WriteLine($"{(reference.TargetId != null ? reference.TargetId.ToString() : "no")} - {reference.ReferenceTypeId.ToString()}");
+                //}
+
+                // property type
+                //var p = new NodeId(196, NamespaceIndex);
+                //var pd = new PropertyTypeState(Find(p));
+
+                //Find(n).GetChildren(_defaultSystemContext, bis);
+
+                Server.ReportEvent(nd);
+
+                Console.WriteLine(".");
+
+                //this.CreateNode(_defaultSystemContext, null, null, null, nd);
+
                 //for (int ii = 1; ii < 3; ii++)
                 //{
                 //    // construct translation object with default text.
@@ -509,6 +606,7 @@ namespace OpcAlarmServer
             }
             catch (Exception ex)
             {
+                Utils.TraceDebug("{0}", ex);
                 Utils.Trace(ex, "Unexpected error during simulation.");
             }
         }

@@ -158,7 +158,6 @@ namespace OpcAlarmServer
             application.ConfigSectionName = "Opc.Ua.MyServer";
 
             ApplicationConfiguration config = await application.LoadApplicationConfiguration(false);
-
             bool haveAppCertificate = await application.CheckApplicationInstanceCertificate(false, 0);
             if (!haveAppCertificate)
             {
