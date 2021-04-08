@@ -94,15 +94,27 @@ namespace OpcAlarmServer
                     {
                         throw new ScriptException($"AlarmId: {step.Event.AlarmId} is not defined");
                     }
+                    if(step.Event.StateChanges == null || step.Event.StateChanges.Count == 0)
+                    {
+                        throw new ScriptException($"{step.Event.EventId} doesn't have any StateChanges");
+                    }
                 }
             }
         }
 
         private void ReplayScriptStart(Configuration.Configuration scriptConfiguration)
-        {     
-            VerifyScriptConfiguration(scriptConfiguration);
-            Console.WriteLine("Script starts executing");
-            _scriptEngine = new ScriptEngine(scriptConfiguration.Script, OnScriptStepAvailable);  
+        {
+            try
+            {
+                VerifyScriptConfiguration(scriptConfiguration);
+                Console.WriteLine("Script starts executing");
+                _scriptEngine = new ScriptEngine(scriptConfiguration.Script, OnScriptStepAvailable);
+            }
+            catch (ScriptException ex)
+            {
+                Console.WriteLine($"Script Engine Exception '{ex.Message}'\nSCRIPT WILL NOT START");
+                throw;
+            }
         }
 
         private void OnScriptStepAvailable(Step step, long loopNumber)

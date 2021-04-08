@@ -9,6 +9,7 @@ namespace OpcAlarmServer.Configuration
         TripAlarmType,
         OffNormalAlarmType,
         AlarmConditionType,
-        LimitAlarmType
+        LimitAlarmType,
+        ConditionType
     }
 }
