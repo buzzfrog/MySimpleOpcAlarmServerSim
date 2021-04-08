@@ -10,12 +10,4 @@ namespace OpcAlarmServer.Configuration
         public string Name { get; set; }
         public string Id { get; set; }
     }
-
-    public enum AlarmObjectStates
-    {
-        TripAlarmType,
-        OffNormalAlarmType,
-        AlarmConditionType,
-        LimitAlarmType
-    }
 }

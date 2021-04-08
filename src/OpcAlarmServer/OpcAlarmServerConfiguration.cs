@@ -5,7 +5,7 @@ using System.Text;
 
 namespace OpcAlarmServer
 {
-    [DataContract(Namespace = Namespaces.VendingMachines)]
+    [DataContract(Namespace = Namespaces.AlarmConditionTest)]
     class OpcAlarmServerConfiguration
     {
         public OpcAlarmServerConfiguration()

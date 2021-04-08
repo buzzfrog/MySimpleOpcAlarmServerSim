@@ -6,6 +6,6 @@ namespace OpcAlarmServer
 {
     static class Namespaces
     {
-        public const string VendingMachines = "http://buzzfrog.com/opc/vending";
+        public const string AlarmConditionTest = "http://buzzfrog.com/opc/alarm-condition-test";
     }
 }

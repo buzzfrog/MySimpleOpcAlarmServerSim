@@ -39,7 +39,7 @@ namespace OpcAlarmServer
 
             // set one namespace for the type model and one names for dynamically created nodes.
             string[] namespaceUrls = new string[1];
-            namespaceUrls[0] = Namespaces.VendingMachines;
+            namespaceUrls[0] = Namespaces.AlarmConditionTest;
             SetNamespaces(namespaceUrls);
 
             // get the configuration for the node manager.
@@ -56,7 +56,6 @@ namespace OpcAlarmServer
             _scriptconfiguration = Configuration.Configuration.FromJson(jsonstring);
         }
 
-        // TODO: Make better
         private void VerifyScriptConfiguration(Configuration.Configuration scriptConfiguration)
         {
             _scriptAlarmToSources = new Dictionary<string, string>();
@@ -452,38 +451,9 @@ namespace OpcAlarmServer
                     
                     AddPredefinedNode(SystemContext, simFolderState);
                 }
-
-
-
-
-                //// create root for vending machines
-                //_vendingMachinesFolder = new VendingMachinesFolder(SystemContext, null, new NodeId("vendingmachinefolder", NamespaceIndex), "VendingMachines");
-
-                //_vendingMachinesFolder.AddReference(ReferenceTypeIds.HasNotifier, true, ObjectIds.Server);
-                //AddRootNotifier(_vendingMachinesFolder);
-
-                //// create a number of vendingmachines
-                //for (int postNameNumber = 0; postNameNumber < 100; postNameNumber++)
-                //{
-                //    VendingMachineState vendingMachine;
-
-                //    var name = $"vending_machine_{postNameNumber}";
-                //    _vendingMachines[name] = vendingMachine =
-                //        new VendingMachineState(this, new NodeId(name, NamespaceIndex), name);
-
-                //    _vendingMachinesFolder.AddChild(vendingMachine);
-
-                //    vendingMachine.AddNotifier(SystemContext, ReferenceTypeIds.HasEventSource, true, _vendingMachinesFolder);
-                //    _vendingMachinesFolder.AddNotifier(SystemContext, ReferenceTypeIds.HasEventSource, false, vendingMachine);
-                //}
-
-                //references.Add(new NodeStateReference(ReferenceTypeIds.HasNotifier, false, _vendingMachinesFolder.NodeId));
             }
 
             ReplayScriptStart(_scriptconfiguration);
-
-            //_system.StartSimulation();
-            //_eventsSimulationTimer = new Timer(OnRaiseSystemEvents, null, 1000, 1000);
         }
 
         /// <summary>
