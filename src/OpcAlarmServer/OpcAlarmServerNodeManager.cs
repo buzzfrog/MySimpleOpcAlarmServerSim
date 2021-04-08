@@ -480,6 +480,8 @@ namespace OpcAlarmServer
             return predefinedNode;
         }
 
+        int runNumber = 0;
+
         private void DoSimulation(Object source, ElapsedEventArgs e)
         {
             // https://github.com/OPCFoundation/UA-.NETStandard/issues/1306
@@ -490,37 +492,38 @@ namespace OpcAlarmServer
                 TranslationInfo info = new TranslationInfo(
                     "SystemCycleStarted",
                     "en-US",
-                    "Hello");
+                    "Hello, run number {0}",
+                    ++runNumber);
 
-                var n = new NodeId(235, NamespaceIndex);
-                
-                var nd = new SystemEventState(null);
+                var _systemCycleStatusEventType = _predefinedNodes.Find
+                    (n => n.BrowseName == new QualifiedName("SystemCycleStatusEventType", NamespaceIndex));
 
-                var kd = _predefinedNodes.Find(n => n.BrowseName == new QualifiedName("SystemCycleStatusEventType", NamespaceIndex));
-
-                nd.Initialize(
+                var _systemEventState = new SystemEventState(null);
+                _systemEventState.Initialize(
                        _defaultSystemContext,
-                       kd,
+                       _systemCycleStatusEventType,
                        EventSeverity.Medium,
                        new LocalizedText(info));
 
-                nd.EventType = new PropertyState<NodeId>(nd);
-                nd.EventType.Value = n;
+                // Inject my SystemCycleStatusEventType into the object
+                _systemEventState.EventType = new PropertyState<NodeId>(_systemEventState);
+                _systemEventState.EventType.Value = _systemCycleStatusEventType.NodeId;
+                _systemEventState.TypeDefinitionId = _systemCycleStatusEventType.NodeId;
 
-                nd.TypeDefinitionId = n;
+                // This doesn't work
+                var ps = _systemEventState.AddProperty<string>("CycleId", DataTypeIds.String, 1);
+                ps.Value = "12";
 
-                //var ps = nd.AddProperty<string>("CycleId", DataTypeIds.String, 1);
-                
-                //ps.Value = "12";
-                //ps.Create(SystemContext, Find(n));
-                // var b = nd.CreateChild(SystemContext, new QualifiedName("CycleId", NamespaceIndex));
-                nd.SetChildValue(SystemContext, Opc.Ua.BrowseNames.SourceName, "System", false);
-                nd.SetChildValue(SystemContext, Opc.Ua.BrowseNames.SourceNode, Opc.Ua.ObjectIds.Server, false);
-                //nd.UpdateChangeMasks(NodeStateChangeMasks.Children | NodeStateChangeMasks.Value | NodeStateChangeMasks.References);
-                //if (!nd.SetChildValue(SystemContext, new QualifiedName("CycleId", NamespaceIndex), "12", false))
-                //{
-                //    Console.WriteLine($"Can't set value - {new QualifiedName("CycleId", NamespaceIndex)}");
-                //}
+                // This doesn't work, because the class don't have this field, it need to be definied in the class
+                if (!_systemEventState.SetChildValue(SystemContext, new QualifiedName("CycleId", NamespaceIndex), "12", false))
+                {
+                    Console.WriteLine($"Can't set value - {new QualifiedName("CycleId", NamespaceIndex)}");
+                }
+
+                Server.ReportEvent(_systemEventState);
+
+                Console.WriteLine(".");
+
 
                 //var s = new StructureDefinition();
                 //s.Fields = new StructureFieldCollection
@@ -566,9 +569,6 @@ namespace OpcAlarmServer
 
                 //Find(n).GetChildren(_defaultSystemContext, bis);
 
-                Server.ReportEvent(nd);
-
-                Console.WriteLine(".");
 
                 //this.CreateNode(_defaultSystemContext, null, null, null, nd);
 
