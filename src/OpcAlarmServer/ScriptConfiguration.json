@@ -121,7 +121,12 @@
           "reason": "AD Lamp Off",
           "severity": "Medium",
           "eventId": "V1_AD_Lamp_Off-1",
-          "stateChanges": []
+          "stateChanges": [
+            {
+              "stateType": "Enabled",
+              "state": true
+            }
+          ]
         }
       },
       {
