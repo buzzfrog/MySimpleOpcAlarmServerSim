@@ -638,48 +638,6 @@ namespace OpcAlarmServer
 
             return predefinedNodes;
         }
-
-        /// <summary>
-        /// Creates simulated events
-        /// </summary>
-        /// <param name="state"></param>
-        private void OnRaiseSystemEvents(object state)
-        {
-            try
-            {
-                SystemEventState e = new SystemEventState(null);
-
-                e.Initialize(
-                    SystemContext,
-                    null,
-                    EventSeverity.Medium,
-                    new LocalizedText("Raising Events"));
-
-                e.SetChildValue(SystemContext, BrowseNames.SourceNode, ObjectIds.Server, false);
-                e.SetChildValue(SystemContext, BrowseNames.SourceName, "Internal", false);
-
-                Server.ReportEvent(e);
-
-                AuditEventState ae = new AuditEventState(null);
-
-                ae.Initialize(
-                    SystemContext,
-                    null,
-                    EventSeverity.Medium,
-                    new LocalizedText("Events Raised"),
-                    true,
-                    DateTime.UtcNow);
-
-                ae.SetChildValue(SystemContext, BrowseNames.SourceNode, ObjectIds.Server, false);
-                ae.SetChildValue(SystemContext, BrowseNames.SourceName, "Internal", false);
-
-                Server.ReportEvent(ae);
-            }
-            catch (Exception e)
-            {
-                Utils.Trace(e, "Unexpected error in OnRaiseSystemEvents");
-            }
-        }
         #endregion
     }
 }
