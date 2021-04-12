@@ -99,7 +99,6 @@ namespace OpcAlarmServer.Model
             {
                 switch (alarm.AlarmType)
                 {
-                    // TODO: fix later, remove conditons
                     case AlarmObjectStates.TripAlarmType:
                         node = new TripAlarmState(this);
                         break;
