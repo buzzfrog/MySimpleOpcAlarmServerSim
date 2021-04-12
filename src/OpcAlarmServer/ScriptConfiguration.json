@@ -57,7 +57,7 @@
     // Enable if the script should be executed in a loop (false is not implemented yet)
     "stepsInLoop": false,
     // How long the test should execute (not implemented)
-    "runningForSeconds": 20,
+    "runningForSeconds": 360,
     // The steps
     // Two types of steps exist:
     // 1) Event - where a state is changed for an Alarm
