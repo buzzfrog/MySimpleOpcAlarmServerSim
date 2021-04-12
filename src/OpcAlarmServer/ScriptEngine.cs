@@ -17,6 +17,11 @@ namespace OpcAlarmServer
         private Script _script;
         private long _numberOfLoops = 1;
 
+        /// <summary>
+        /// Initialize ScriptEngine
+        /// </summary>
+        /// <param name="script"></param>
+        /// <param name="scripCallback"></param>
         public ScriptEngine(Script script, NextScriptStepAvailable scripCallback)
         {
             OnNextScriptStepAvailable += scripCallback;
@@ -31,6 +36,10 @@ namespace OpcAlarmServer
             _stepsTimer.Start();
         }
 
+        /// <summary>
+        /// Create the Linked List that will be used internally to go through the steps
+        /// </summary>
+        /// <param name="steps"></param>
         private void CreateLinkedList(List<Step> steps)
         {
             _steps = new LinkedList<Step>();
@@ -40,6 +49,10 @@ namespace OpcAlarmServer
             }
         }
 
+        /// <summary>
+        /// Active a new step
+        /// </summary>
+        /// <param name="step"></param>
         private void ActivateCurrentStep(LinkedListNode<Step> step)
         {
             _currentStep = step;
@@ -47,6 +60,11 @@ namespace OpcAlarmServer
            _stepsTimer.Interval = 1 + step.Value.SleepInSeconds * 1000;
         }
 
+        /// <summary>
+        /// Get the next step
+        /// </summary>
+        /// <param name="step"></param>
+        /// <returns></returns>
         private LinkedListNode<Step> GetNextValue(LinkedListNode<Step> step)
         {
             if(step == null)
@@ -67,6 +85,11 @@ namespace OpcAlarmServer
             }
         }
 
+        /// <summary>
+        /// Trigger when next step should be executed
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="e"></param>
         private void OnStepTimedEvent(Object source, ElapsedEventArgs e)
         {
             ActivateCurrentStep(GetNextValue(_currentStep));

@@ -11,9 +11,4 @@ namespace OpcAlarmServer.Configuration
         public string Name { get; set; }
         public List<Alarm> Alarms { get; set; }
     }
-
-    public enum SourceObjectState
-    {
-        BaseObjectState
-    }
 }
