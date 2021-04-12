@@ -66,9 +66,9 @@ The script have two sections.
   "script": {
     // This enable to have a waiting period before the replay starts
     "waitUntilStartInSeconds": 10,
-    // Enable if the script should be executed in a loop (false is not implemented yet)
-    "stepsInLoop": true,
-    // How long the test should execute (not implemented)
+    // Enable if the script should be executed in a loop
+    "isScriptInRepeatingLoop": true,
+    // How long the test should execute
     "runningForSeconds": 6000,
     // The steps
     // Two types of steps exist:
