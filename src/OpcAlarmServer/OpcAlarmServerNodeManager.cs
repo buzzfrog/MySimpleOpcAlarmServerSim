@@ -56,6 +56,10 @@ namespace OpcAlarmServer
             _scriptconfiguration = Configuration.Configuration.FromJson(jsonstring);
         }
 
+        /// <summary>
+        /// Verifies the script configuration file
+        /// </summary>
+        /// <param name="scriptConfiguration"></param>
         private void VerifyScriptConfiguration(Configuration.Configuration scriptConfiguration)
         {
             _scriptAlarmToSources = new Dictionary<string, string>();
@@ -102,6 +106,10 @@ namespace OpcAlarmServer
             }
         }
 
+        /// <summary>
+        /// Starts the script replay
+        /// </summary>
+        /// <param name="scriptConfiguration"></param>
         private void ReplayScriptStart(Configuration.Configuration scriptConfiguration)
         {
             try
@@ -117,6 +125,11 @@ namespace OpcAlarmServer
             }
         }
 
+        /// <summary>
+        /// Called when a new script step are available
+        /// </summary>
+        /// <param name="step"></param>
+        /// <param name="loopNumber"></param>
         private void OnScriptStepAvailable(Step step, long loopNumber)
         {
             if (step.Event != null)
@@ -130,6 +143,11 @@ namespace OpcAlarmServer
             PrintScriptStep(step, loopNumber);
         }
 
+        /// <summary>
+        /// Update Alarm information
+        /// </summary>
+        /// <param name="alarm"></param>
+        /// <param name="scriptEvent"></param>
         private void UpdateAlarm(SimAlarmStateBackend alarm, Event scriptEvent)
         {
             alarm.Reason = scriptEvent.Reason;
@@ -153,12 +171,22 @@ namespace OpcAlarmServer
             }
         }
 
+        /// <summary>
+        /// Get Alarm information
+        /// </summary>
+        /// <param name="step"></param>
+        /// <returns></returns>
         private SimAlarmStateBackend GetAlarm(Step step)
         {
             var sourceNodeId = _scriptAlarmToSources[step.Event.AlarmId];
             return _system.SourceNodes[sourceNodeId].Alarms[step.Event.AlarmId];
         }
 
+        /// <summary>
+        /// Print script current step on console
+        /// </summary>
+        /// <param name="step"></param>
+        /// <param name="loopNumber"></param>
         private void PrintScriptStep(Step step, long loopNumber)
         {
             if (step.Event != null)
@@ -169,6 +197,7 @@ namespace OpcAlarmServer
                     Console.WriteLine($"\t\t{sc.StateType} - {sc.State}");
                 }
             }
+
             if (step.SleepInSeconds > 0)
             {
                 Console.WriteLine($"{DateTime.UtcNow.ToLongTimeString()} ({loopNumber}) -\tSleep: {step.SleepInSeconds}");
@@ -438,9 +467,9 @@ namespace OpcAlarmServer
                     externalReferences[ObjectIds.Server] = references = new List<IReference>();
                 }
 
+                // Folders Nodes
                 foreach (var folder in _scriptconfiguration.Folders)
                 {
-                    // Folder Node
                     var simFolderState = new SimFolderState(SystemContext, null, new NodeId(folder.Name, NamespaceIndex), folder.Name);
                     simFolderState.AddReference(ReferenceTypeIds.HasNotifier, true, ObjectIds.Server);
                     AddRootNotifier(simFolderState);
@@ -503,7 +532,6 @@ namespace OpcAlarmServer
                     }
                     else
                     {
-
                         if (!MonitoredNodes.TryGetValue(monitoredItem.NodeId, out MonitoredNode2 monitoredNode))
                         {
                             continue;
@@ -600,7 +628,6 @@ namespace OpcAlarmServer
         {
             return new NodeId(++_nodeIdCounter, NamespaceIndex);
         }
-
 
         /// <summary>
         /// Loads a node set from a file or resource and addes them to the set of predefined nodes.
