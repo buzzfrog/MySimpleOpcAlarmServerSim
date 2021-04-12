@@ -67,6 +67,11 @@ namespace OpcAlarmServer
             {
                 foreach (var source in folder.Sources)
                 {
+                    if(!_sourceNodes.ContainsKey(source.Name))
+                    {
+                        throw new ScriptException($"Source Name: {source.Name} doesn't exist");
+                    }
+
                     foreach (var alarm in source.Alarms)
                     {
                         if(_scriptAlarmToSources.ContainsKey(alarm.Id))
@@ -143,7 +148,7 @@ namespace OpcAlarmServer
                     var alarm = GetAlarm(step);
                     UpdateAlarm(alarm, step.Event);
                     var sourceNodeId = _scriptAlarmToSources[step.Event.AlarmId];
-                    _sourceNodes[sourceNodeId].UpdateAlarmInSource(alarm, step.Event.AlarmId + $"({loopNumber})");
+                    _sourceNodes[sourceNodeId].UpdateAlarmInSource(alarm, $"{step.Event.AlarmId}({loopNumber})");
                 }
 
                 PrintScriptStep(step, loopNumber);
