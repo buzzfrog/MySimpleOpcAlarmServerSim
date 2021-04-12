@@ -16,6 +16,7 @@ namespace OpcAlarmServer
         private Timer _stepsTimer;
         private Script _script;
         private long _numberOfLoops = 1;
+        private DateTime _scriptStartTime;
 
         /// <summary>
         /// Initialize ScriptEngine
@@ -30,10 +31,22 @@ namespace OpcAlarmServer
 
             CreateLinkedList(script.Steps);
 
+            StartScript();
+        }
+
+        private void StartScript()
+        {
             _stepsTimer = new Timer();
             _stepsTimer.Elapsed += OnStepTimedEvent;
             _stepsTimer.Interval = _script.WaitUntilStartInSeconds * 1000;
             _stepsTimer.Start();
+            _scriptStartTime = DateTime.Now;
+        }
+
+        private void StopScript()
+        {
+            _stepsTimer.Close();
+            _stepsTimer = null;
         }
 
         /// <summary>
@@ -56,8 +69,11 @@ namespace OpcAlarmServer
         private void ActivateCurrentStep(LinkedListNode<Step> step)
         {
             _currentStep = step;
-            OnNextScriptStepAvailable!.Invoke(step.Value, _numberOfLoops);
-           _stepsTimer.Interval = 1 + step.Value.SleepInSeconds * 1000;
+            OnNextScriptStepAvailable!.Invoke(step?.Value , _numberOfLoops);
+            if (_stepsTimer != null)
+            {
+                _stepsTimer.Interval = 1 + step.Value.SleepInSeconds * 1000;
+            }
         }
 
         /// <summary>
@@ -67,6 +83,12 @@ namespace OpcAlarmServer
         /// <returns></returns>
         private LinkedListNode<Step> GetNextValue(LinkedListNode<Step> step)
         {
+            if(_scriptStartTime.AddSeconds(_script.RunningForSeconds) < DateTime.Now)
+            {
+                StopScript();
+                return null;
+            }
+
             if(step == null)
             {
                 return _steps.First;
@@ -79,8 +101,16 @@ namespace OpcAlarmServer
                 }
                 else
                 {
-                    _numberOfLoops++;
-                    return _steps.First;
+                    if (_script.StepsInLoop)
+                    {
+                        _numberOfLoops++;
+                        return _steps.First;
+                    }
+                    else
+                    {
+                        StopScript();
+                        return null;
+                    }
                 }
             }
         }

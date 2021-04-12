@@ -132,15 +132,22 @@ namespace OpcAlarmServer
         /// <param name="loopNumber"></param>
         private void OnScriptStepAvailable(Step step, long loopNumber)
         {
-            if (step.Event != null)
+            if (step == null)
             {
-                var alarm = GetAlarm(step);
-                UpdateAlarm(alarm, step.Event);
-                var sourceNodeId = _scriptAlarmToSources[step.Event.AlarmId];
-                _sourceNodes[sourceNodeId].UpdateAlarmInSource(alarm, step.Event.AlarmId + $"({loopNumber})");
+                Console.WriteLine("SCRIPT ENDED");
             }
+            else
+            {
+                if (step.Event != null)
+                {
+                    var alarm = GetAlarm(step);
+                    UpdateAlarm(alarm, step.Event);
+                    var sourceNodeId = _scriptAlarmToSources[step.Event.AlarmId];
+                    _sourceNodes[sourceNodeId].UpdateAlarmInSource(alarm, step.Event.AlarmId + $"({loopNumber})");
+                }
 
-            PrintScriptStep(step, loopNumber);
+                PrintScriptStep(step, loopNumber);
+            }
         }
 
         /// <summary>

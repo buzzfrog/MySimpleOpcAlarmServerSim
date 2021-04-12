@@ -55,9 +55,9 @@
     // This enable to have a waiting period before the replay starts
     "waitUntilStartInSeconds": 10,
     // Enable if the script should be executed in a loop (false is not implemented yet)
-    "stepsInLoop": true,
+    "stepsInLoop": false,
     // How long the test should execute (not implemented)
-    "runningForSeconds": 6000,
+    "runningForSeconds": 20,
     // The steps
     // Two types of steps exist:
     // 1) Event - where a state is changed for an Alarm
@@ -130,7 +130,7 @@
         }
       },
       {
-        "sleepInSeconds": 7
+        "sleepInSeconds": 25
       },
       {
         "event": {
@@ -152,7 +152,7 @@
       {
         "event": {
           "alarmId": "V1_TemperatureHigh",
-          "reason": "Temperature is HIGH",
+          "reason": "Temperature is HIGH (LAST EVENT IN LOOP)",
           "severity": "High",
           "eventId": "V1_TemperatureHigh-1",
           "stateChanges": [
